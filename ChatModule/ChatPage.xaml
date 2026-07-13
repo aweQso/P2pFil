@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:P2PFil.ChatModule"
+             xmlns:helpers="clr-namespace:P2PFil.Helpers"
+             x:Class="P2PFil.ChatModule.ChatPage"
+             BackgroundColor="#121212"
+             Title="Güvenli DM">
+
+    <ContentPage.Resources>
+        <helpers:AlignmentConverter x:Key="AlignmentConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*, Auto" Margin="15">
+
+        <!-- Mesaj Listesi -->
+        <CollectionView x:Name="MessagesListView" Grid.Row="0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:ChatMessage">
+                    <Grid Padding="5">
+                        <Border BackgroundColor="#1AFFFFFF" 
+                                Stroke="#33FFFFFF" 
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 20,20,20,5"
+                                HorizontalOptions="{Binding IsMe, Converter={StaticResource AlignmentConverter}}"
+                                Padding="15"
+                                MaximumWidthRequest="280">
+
+                            <VerticalStackLayout>
+                                <Label Text="{Binding SenderName}" FontSize="10" TextColor="#B3FFFFFF" FontAttributes="Bold"/>
+
+                                <!-- 1. METİN MESAJI -->
+                                <Label Text="{Binding Content}" FontSize="15" TextColor="White" Margin="0,5,0,0">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding MessageType}" Value="Text">
+                                            <Setter Property="IsVisible" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding MessageType}" Value="Image">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding MessageType}" Value="Video">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+
+                                <!-- 2. FOTOĞRAF MESAJI -->
+                                <Image Source="{Binding LocalMediaPath}" HeightRequest="180" Aspect="AspectFit" Margin="0,5,0,0">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding MessageType}" Value="Text">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image" Binding="{Binding MessageType}" Value="Image">
+                                            <Setter Property="IsVisible" Value="True"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image" Binding="{Binding MessageType}" Value="Video">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                    <!-- Fotoğrafa tıklayınca tam ekran açması için -->
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnMediaTapped" CommandParameter="{Binding LocalMediaPath}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <!-- 3. VİDEO MESAJI (Kasmaması için Tıkla-Aç mantığı) -->
+                                <Frame BackgroundColor="#33000000" CornerRadius="10" Padding="10" Margin="0,5,0,0" BorderColor="Transparent">
+                                    <Frame.Triggers>
+                                        <DataTrigger TargetType="Frame" Binding="{Binding MessageType}" Value="Text">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame" Binding="{Binding MessageType}" Value="Image">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Frame" Binding="{Binding MessageType}" Value="Video">
+                                            <Setter Property="IsVisible" Value="True"/>
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnMediaTapped" CommandParameter="{Binding LocalMediaPath}"/>
+                                    </Frame.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                        <Label Text="🎬" FontSize="20" VerticalOptions="Center"/>
+                                        <Label Text="{Binding Content}" TextColor="LightBlue" TextDecorations="Underline" VerticalOptions="Center" LineBreakMode="TailTruncation" MaximumWidthRequest="150"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+
+                                <Label Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" FontSize="8" TextColor="#80FFFFFF" HorizontalOptions="End" Margin="0,5,0,0"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Mesaj Yazma Alanı (Ataş Butonu Eklendi) -->
+        <Border Grid.Row="1" 
+                BackgroundColor="#1AFFFFFF" 
+                Stroke="#33FFFFFF" 
+                StrokeShape="RoundRectangle 30"
+                Padding="5,0"
+                Margin="0,10,0,0">
+            <!-- 2 Sütun yerine 3 Sütun: Ataş, Giriş, Gönder -->
+            <Grid ColumnDefinitions="Auto, *, Auto">
+
+                <!-- MEDYA GÖNDERME BUTONU -->
+                <Button Text="📎" 
+                        Clicked="OnAttachClicked" 
+                        Grid.Column="0" 
+                        BackgroundColor="Transparent" 
+                        TextColor="#B3FFFFFF" 
+                        FontSize="20"
+                        WidthRequest="40"
+                        Padding="0"
+                        VerticalOptions="Center" />
+
+                <Entry x:Name="MessageEntry" 
+                       Placeholder="Mesaj..." 
+                       PlaceholderColor="#80FFFFFF"
+                       TextColor="White"
+                       Background="Transparent"
+                       Grid.Column="1" 
+                       VerticalOptions="Center"
+                       Margin="5,0"/>
+
+                <Button Text="Gönder" 
+                        Clicked="OnSendClicked" 
+                        Grid.Column="2" 
+                        BackgroundColor="#6200EE" 
+                        CornerRadius="20"
+                        TextColor="White"
+                        FontAttributes="Bold"/>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

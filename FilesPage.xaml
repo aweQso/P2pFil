@@ -1,0 +1,144 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:P2PFil.Helpers"
+             x:Class="P2PFil.FilesPage"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <helpers:InvertedBoolConverter x:Key="InvertedBool" />
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0F172A" Offset="0.0" />
+            <GradientStop Color="#1E293B" Offset="0.5" />
+            <GradientStop Color="#0F172A" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
+        <Grid Padding="20,40,20,100" RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1.2*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1.5*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" ColumnDefinitions="*, *" ColumnSpacing="15">
+                <Button Grid.Column="0" Text="Dosya Seç" Clicked="OnPickFileClicked" BackgroundColor="#10B981" TextColor="White" CornerRadius="14" HeightRequest="48" FontAttributes="Bold">
+                    <Button.Shadow>
+                        <Shadow Brush="#10B981" Offset="0,5" Radius="10" Opacity="0.4"/>
+                    </Button.Shadow>
+                </Button>
+                <Button Grid.Column="1" Text="Ağı Yenile" Clicked="OnRefreshClicked" BackgroundColor="#6366F1" TextColor="White" CornerRadius="14" HeightRequest="48" FontAttributes="Bold">
+                    <Button.Shadow>
+                        <Shadow Brush="#6366F1" Offset="0,5" Radius="10" Opacity="0.4"/>
+                    </Button.Shadow>
+                </Button>
+            </Grid>
+
+            <Label Grid.Row="1" Text="Paylaştığım Dosyalar" FontAttributes="Bold" FontSize="16" TextColor="#F8FAFC" Margin="5,10,0,0"/>
+
+            <!-- KENDİ DOSYALARIN -->
+            <CollectionView Grid.Row="2" x:Name="MyFilesCollection">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#15FFFFFF" Stroke="#30FFFFFF" StrokeThickness="1" Margin="0,5" Padding="12">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="12">
+                                <Frame Grid.RowSpan="2" Grid.Column="0" BackgroundColor="#30FFFFFF" CornerRadius="10" Padding="12" HasShadow="False" VerticalOptions="Center">
+                                    <Label Text="📄" FontSize="18" />
+                                </Frame>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding FileName}" FontAttributes="Bold" TextColor="White" LineBreakMode="WordWrap"/>
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding FileSize, StringFormat='Boyut: {0}'}" FontSize="12" TextColor="#CBD5E1" />
+                                <Button Grid.RowSpan="2" Grid.Column="2" Text="Sil" Clicked="OnDeleteFileClicked" CommandParameter="{Binding .}" BackgroundColor="#EF4444" TextColor="White" CornerRadius="10" HeightRequest="35" WidthRequest="60" VerticalOptions="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Grid.Row="3" Text="Ağdaki Dosyalar" FontAttributes="Bold" FontSize="16" TextColor="#F8FAFC" Margin="5,10,0,0"/>
+
+            <!-- AĞDAKİ DOSYALAR (GÜNCELLENEN KISIM) -->
+            <CollectionView Grid.Row="4" x:Name="NetworkFilesCollection">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#15FFFFFF" Stroke="#30FFFFFF" StrokeThickness="1" Margin="0,5" Padding="12">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <StackLayout Spacing="8">
+                                <!-- RowDefinitions kısmına bir satır daha (Auto) ekledik ve Grid.RowSpan'ı 3 yaptık -->
+                                <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto, Auto" ColumnSpacing="12">
+                                    <Frame Grid.RowSpan="3" Grid.Column="0" BackgroundColor="#3010B981" CornerRadius="10" Padding="12" HasShadow="False" VerticalOptions="Center">
+                                        <Label Text="☁️" FontSize="18" />
+                                    </Frame>
+
+                                    <!-- Dosya Adı -->
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding FileName}" FontAttributes="Bold" TextColor="White" LineBreakMode="TailTruncation"/>
+
+                                    <!-- Kimden -->
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding OwnerName, StringFormat='Kimden: {0}'}" FontSize="11" TextColor="#818CF8" FontAttributes="Bold"/>
+
+                                    <!-- YENİ EKLENEN KISIM: Boyut ve Tarih -->
+                                    <StackLayout Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="4" Margin="0,2,0,0">
+                                        <Label Text="{Binding FileSize}" FontSize="10" TextColor="#94A3B8" />
+                                        <Label Text="•" FontSize="10" TextColor="#64748B" />
+                                        <Label Text="{Binding UploadDate, StringFormat='{0:dd.MM.yyyy HH:mm}'}" FontSize="10" TextColor="#94A3B8" />
+                                    </StackLayout>
+
+                                    <!-- İndir Butonu -->
+                                    <Button Grid.RowSpan="3" Grid.Column="2" Text="İndir" Clicked="OnDownloadClicked" CommandParameter="{Binding .}" 
+                                            IsVisible="{Binding IsDownloading, Converter={StaticResource InvertedBool}}"
+                                            BackgroundColor="#10B981" TextColor="White" CornerRadius="10" HeightRequest="35" WidthRequest="65" VerticalOptions="Center"/>
+                                </Grid>
+
+                                <!-- İndirme İlerleme Çubuğu ve Durumu -->
+                                <StackLayout IsVisible="{Binding IsDownloading}" Spacing="4">
+                                    <ProgressBar Progress="{Binding Progress}" ProgressColor="#10B981" HeightRequest="4"/>
+                                    <Label Text="{Binding StatusMessage}" FontSize="10" TextColor="#A7F3D0" FontAttributes="Bold" HorizontalOptions="End"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- Alt Yüzen Menü (Glassmorphism) -->
+        <Border VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,30" WidthRequest="260" HeightRequest="70" Background="#20FFFFFF" Stroke="#40FFFFFF" StrokeThickness="1">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,15" Radius="30" Opacity="0.4" />
+            </Border.Shadow>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="35" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="*, *" Padding="6">
+                <!-- Ağ Butonu -->
+                <StackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnGoToNetworkClicked" />
+                    </StackLayout.GestureRecognizers>
+                    <Path Fill="#94A3B8" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" Data="M12,21L15.6,16.2C14.6,15.45 13.35,15 12,15C10.65,15 9.4,15.45 8.4,16.2L12,21M12,3C7.95,3 4.21,4.34 1.2,6.6L3,9C5.5,7.12 8.62,6 12,6C15.38,6 18.5,7.12 21,9L22.8,6.6C19.79,4.34 16.05,3 12,3M12,9C9.3,9 6.81,9.89 4.8,11.4L6.6,13.8C8.1,12.67 9.97,12 12,12C14.03,12 15.9,12.67 17.4,13.8L19.2,11.4C17.19,9.89 14.7,9 12,9Z" />
+                    <Label Text="Ağ" TextColor="#94A3B8" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center"/>
+                </StackLayout>
+                <!-- Dosyalar Butonu -->
+                <Border Grid.Column="1" Background="#30FFFFFF" Stroke="#40FFFFFF" StrokeThickness="1">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="30" />
+                    </Border.StrokeShape>
+                    <StackLayout VerticalOptions="Center" Spacing="2">
+                        <Path Fill="White" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" Data="M20 6H12L10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12Z" />
+                        <Label Text="Dosyalar" TextColor="White" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
