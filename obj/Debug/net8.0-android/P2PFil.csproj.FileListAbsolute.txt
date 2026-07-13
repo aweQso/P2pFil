@@ -1061,3 +1061,4 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Debug\net8.0-android\stamp\_Conver
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Debug\net8.0-android\stamp\_GenerateJavaStubs.stamp
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Debug\net8.0-android\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Debug\net8.0-android\stamp\_ResolveLibraryProjectImports.stamp
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Debug\net8.0-android\P2PFil.sourcelink.json

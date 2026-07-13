@@ -177,3 +177,4 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win10-x64\qualifiers.txt.intermediate
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win10-x64\MultipleQualifiersPerDimensionFound.txt
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win10-x64\ProjectArchitectures.txt
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win10-x64\P2PFil.sourcelink.json

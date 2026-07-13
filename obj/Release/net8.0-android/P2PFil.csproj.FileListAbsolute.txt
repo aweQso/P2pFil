@@ -459,3 +459,4 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-android\stamp\_Conv
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-android\stamp\_GenerateJavaStubs.stamp
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-android\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-android\stamp\_ResolveLibraryProjectImports.stamp
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-android\P2PFil.sourcelink.json

@@ -9,11 +9,13 @@ namespace P2PFil.ChatModule
 {
     public class KeyExchangeService : IDisposable
     {
+        private static readonly ECCurve ExpectedCurve = ECCurve.NamedCurves.nistP256;
+
         private readonly ECDiffieHellman _ecdh;
 
         public KeyExchangeService()
         {
-            _ecdh = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
+            _ecdh = ECDiffieHellman.Create(ExpectedCurve);
         }
 
         public async Task<(byte[] Key, string Fingerprint)> PerformKeyExchangeAsync(NetworkStream stream, CancellationToken ct)
@@ -53,6 +55,15 @@ namespace P2PFil.ChatModule
 
             using var remoteEcdh = ECDiffieHellman.Create();
             remoteEcdh.ImportSubjectPublicKeyInfo(remotePublicKey, out _);
+
+            // GÜVENLİK DÜZELTMESİ (Curve Confusion): Karşı taraftan gelen SPKI blob'unun
+            // içinde kodlanmış eğri parametreleri önceden doğrulanmadan kabul ediliyordu.
+            // Artık import sonrası eğri, beklenen nistP256 ile eşleşmiyorsa reddediliyor.
+            var remoteCurveOid = remoteEcdh.ExportParameters(false).Curve.Oid?.Value;
+            if (string.IsNullOrEmpty(remoteCurveOid) || remoteCurveOid != ExpectedCurve.Oid.Value)
+            {
+                throw new CryptographicException("Desteklenmeyen eliptik eğri tespit edildi (curve confusion girişimi olabilir).");
+            }
 
             byte[] derivedKey = _ecdh.DeriveKeyFromHash(remoteEcdh.PublicKey, HashAlgorithmName.SHA256);
 

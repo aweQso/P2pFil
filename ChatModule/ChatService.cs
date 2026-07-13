@@ -1,9 +1,11 @@
-﻿using P2PFil;
+using P2PFil;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -20,6 +22,16 @@ namespace P2PFil.ChatModule
 
         private static readonly string ChatMediaPath = Path.Combine(FileSystem.AppDataDirectory, "P2P_ChatMedia");
         private const int MaxPayloadSize = 25 * 1024 * 1024; // OOM Koruma: 25 MB Limiti
+
+        // GÜVENLİK DÜZELTMESİ (DoS / Kaynak Tükenmesi): Eşzamanlı bağlantı sayısı artık
+        // hem toplamda hem de IP başına sınırlandırılıyor. El sıkışma ve mesaj okuma
+        // artık gerçek bir zaman aşımına tabi (önceden CancellationToken.None
+        // kullanılıyordu; veri göndermeyen bir istemci bağlantıyı süresiz açık
+        // tutup thread-pool/soket kaynaklarını tüketebiliyordu).
+        private readonly SemaphoreSlim _connectionLimiter = new(50, 50);
+        private readonly ConcurrentDictionary<string, int> _perIpConnections = new();
+        private const int MaxConnectionsPerIp = 5;
+        private const int NegotiationTimeoutSeconds = 20;
 
         public event Action<ChatMessage>? OnMessageReceived;
 
@@ -56,67 +68,100 @@ namespace P2PFil.ChatModule
             {
                 if (SessionManager.Instance.TryGetSessionKey(remoteIp, out byte[] existingKey))
                 {
-                    stream.WriteByte(0x01);
+                    await FrameIO.WriteByteAsync(stream, 0x01, ct);
                     await stream.FlushAsync(ct);
-                    int response = stream.ReadByte();
+                    int response = await FrameIO.ReadByteOrEofAsync(stream, ct);
                     if (response == 0x01) return existingKey;
                 }
-                stream.WriteByte(0x00);
+                await FrameIO.WriteByteAsync(stream, 0x00, ct);
                 await stream.FlushAsync(ct);
 
                 using var keyExchange = new KeyExchangeService();
                 var (newKey, fingerprint) = await keyExchange.PerformKeyExchangeAsync(stream, ct);
 
+                VerifyTrustOrThrow(remoteIp, fingerprint);
                 SessionManager.Instance.CreateOrUpdateSession(remoteIp, newKey, fingerprint);
                 return newKey;
             }
             else
             {
-                int flag = stream.ReadByte();
+                int flag = await FrameIO.ReadByteOrEofAsync(stream, ct);
                 if (flag == 0x01)
                 {
                     if (SessionManager.Instance.TryGetSessionKey(remoteIp, out byte[] existingKey))
                     {
-                        stream.WriteByte(0x01);
+                        await FrameIO.WriteByteAsync(stream, 0x01, ct);
                         await stream.FlushAsync(ct);
                         return existingKey;
                     }
                     else
                     {
-                        stream.WriteByte(0x00);
+                        await FrameIO.WriteByteAsync(stream, 0x00, ct);
                         await stream.FlushAsync(ct);
                     }
                 }
                 using var keyExchange = new KeyExchangeService();
                 var (newKey, fingerprint) = await keyExchange.PerformKeyExchangeAsync(stream, ct);
 
+                VerifyTrustOrThrow(remoteIp, fingerprint);
                 SessionManager.Instance.CreateOrUpdateSession(remoteIp, newKey, fingerprint);
                 return newKey;
+            }
+        }
+
+        // GÜVENLİK DÜZELTMESİ (MITM): Trust-On-First-Use (TOFU). Bir IP ile ilk kez
+        // anahtar değişimi yapıldığında fingerprint kalıcı olarak kaydedilir; sonraki
+        // bağlantılarda fingerprint değişmişse (araya giren aktif bir saldırgan
+        // olabilir) bağlantı reddedilir. Bkz. PeerTrustStore.cs için sınırlamalar.
+        private static void VerifyTrustOrThrow(IPAddress remoteIp, string fingerprint)
+        {
+            var result = PeerTrustStore.Instance.VerifyOrTrust(remoteIp.ToString(), fingerprint);
+            if (result == TrustResult.Mismatch)
+            {
+                SessionManager.Instance.RemoveSession(remoteIp);
+                throw new CryptographicException(
+                    $"GÜVENLİK UYARISI: {remoteIp} için beklenen kimlik parmak izi eşleşmiyor. " +
+                    "Bağlantı olası bir Man-in-the-Middle saldırısı şüphesiyle reddedildi.");
             }
         }
 
         private async Task HandleIncomingMessage(TcpClient client)
         {
             IPAddress? remoteIp = null;
+            bool acquiredSlot = false;
+            string? ipKey = null;
             try
             {
                 var remoteEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
                 remoteIp = remoteEndPoint?.Address;
                 if (remoteIp == null) return;
+                ipKey = remoteIp.ToString();
+
+                if (!await _connectionLimiter.WaitAsync(TimeSpan.FromSeconds(2)))
+                {
+                    return; // Sunucu meşgul - DoS koruması için bağlantı reddedildi
+                }
+                acquiredSlot = true;
+
+                int current = _perIpConnections.AddOrUpdate(ipKey, 1, (_, c) => c + 1);
+                if (current > MaxConnectionsPerIp)
+                {
+                    return; // Bu IP'den çok fazla eşzamanlı bağlantı - olası DoS denemesi
+                }
+
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(NegotiationTimeoutSeconds));
 
                 using var stream = client.GetStream();
-                byte[] aesKey = await NegotiateSessionAsync(stream, remoteIp, false, CancellationToken.None);
+                byte[] aesKey = await NegotiateSessionAsync(stream, remoteIp, false, cts.Token);
 
-                using var reader = new BinaryReader(stream, Encoding.UTF8, true);
-
-                int payloadLen = reader.ReadInt32();
+                int payloadLen = await FrameIO.ReadInt32Async(stream, cts.Token);
                 // OOM (Out Of Memory) DoS Koruması
                 if (payloadLen <= 0 || payloadLen > MaxPayloadSize)
                 {
                     throw new InvalidDataException($"Şüpheli paket boyutu algılandı: {payloadLen} bytes.");
                 }
 
-                byte[] encryptedPayload = reader.ReadBytes(payloadLen);
+                byte[] encryptedPayload = await FrameIO.ReadExactAsync(stream, payloadLen, cts.Token);
 
                 if (encryptedPayload.Length > 0)
                 {
@@ -162,6 +207,8 @@ namespace P2PFil.ChatModule
             }
             finally
             {
+                if (ipKey != null) _perIpConnections.AddOrUpdate(ipKey, 0, (_, c) => Math.Max(0, c - 1));
+                if (acquiredSlot) _connectionLimiter.Release();
                 client.Close();
             }
         }
@@ -226,10 +273,9 @@ namespace P2PFil.ChatModule
                 string encryptedPayload = EncryptionHelper.Encrypt(jsonPayload, aesKey);
                 byte[] encryptedBytes = Convert.FromBase64String(encryptedPayload);
 
-                using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
-                writer.Write(encryptedBytes.Length);
-                writer.Write(encryptedBytes);
-                writer.Flush();
+                await FrameIO.WriteInt32Async(stream, encryptedBytes.Length, cts.Token);
+                await FrameIO.WriteBytesAsync(stream, encryptedBytes, cts.Token);
+                await stream.FlushAsync(cts.Token);
 
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
@@ -257,10 +303,9 @@ namespace P2PFil.ChatModule
             string encryptedPayload = EncryptionHelper.Encrypt(jsonPayload, aesKey);
             byte[] encryptedBytes = Convert.FromBase64String(encryptedPayload);
 
-            using var writer = new BinaryWriter(stream, Encoding.UTF8, true);
-            writer.Write(encryptedBytes.Length);
-            writer.Write(encryptedBytes);
-            writer.Flush();
+            await FrameIO.WriteInt32Async(stream, encryptedBytes.Length, token);
+            await FrameIO.WriteBytesAsync(stream, encryptedBytes, token);
+            await stream.FlushAsync(token);
         }
     }
 }
