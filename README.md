@@ -8,7 +8,7 @@ P2PFil is a privacy-focused peer-to-peer LAN file sharing and encrypted messagin
 
 \- 📁 Peer-to-peer LAN file sharing with built-in Path Traversal defense to sandbox all remote requests.
 
-\- 🔒 AES-GCM \& AES-CTR encrypted messaging with zero-allocation memory handling optimized for C# 12.0.
+\- 🔒 AES-GCM encrypted messaging with zero-allocation memory handling optimized for C# 12.0.
 
 \- 🛡️ Replay Attack countermeasures using unique, atomic transaction packet identifiers (`MessageId`).
 
