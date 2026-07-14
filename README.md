@@ -38,10 +38,4 @@ The latest architectural update has redesigned the system's security infrastruct
 ### Prerequisites
 *   .NET 8.0 SDK or later
 *   Supported IDE (Visual Studio 2022 / JetBrains Rider)
-
-### Build and Run
-```bash
-git clone [https://github.com/yourusername/P2PFil.git](https://github.com/yourusername/P2PFil.git)
-cd P2PFil
-dotnet build
-dotnet run
+*   Andorid and Windows
