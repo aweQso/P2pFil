@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("P2PFil")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("5.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("5.0+94de518745611578f64bf780c14bc8ead29d30e7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("5.0+c63f8726822e5c9e05d58b1fffcb76df5a1b1b4d")]
 [assembly: System.Reflection.AssemblyProductAttribute("P2PFil")]
 [assembly: System.Reflection.AssemblyTitleAttribute("P2PFil")]
 [assembly: System.Reflection.AssemblyVersionAttribute("5.0.0.0")]

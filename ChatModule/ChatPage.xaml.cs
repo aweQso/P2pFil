@@ -2,59 +2,61 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace P2PFil.ChatModule
 {
     public partial class ChatPage : ContentPage
     {
-        private readonly string _targetIp;
-
-        // DÜZELTME 1: TargetIp dışarıdan (App.xaml.cs tarafından) okunabilir hale getirildi
-        public string TargetIp => _targetIp;
-
+        private readonly string _targetDeviceId;
         private string _targetName;
-        private Action<string, string, string> _peerNameChangedHandler;
+        private readonly Action<string, string, string> _peerNameChangedHandler;
 
+        public string TargetDeviceId => _targetDeviceId;
         public ObservableCollection<ChatMessage> Messages { get; } = new();
 
-        public ChatPage(string targetIp, string targetName)
+        public ChatPage(string targetDeviceId, string targetName)
         {
             InitializeComponent();
-            _targetIp = targetIp;
+            _targetDeviceId = targetDeviceId;
             _targetName = targetName;
             Title = $"{_targetName} ile DM";
 
             MessagesListView.ItemsSource = Messages;
 
-            LoadHistory();
+            // DÜZELTME (Küçük Race Condition): Önceki sürümde önce LoadHistory()
+            // çağrılıp SONRA OnMessageReceived event'ine abone olunuyordu. Bu iki
+            // satır arasındaki (çok kısa ama sıfır olmayan) pencerede gelen bir
+            // mesaj hem geçmişte yoktu hem de artık dinlenmiyordu -> kaybolabiliyordu.
+            // Artık önce abone oluyoruz, sonra geçmişi yüklüyoruz. LoadHistory
+            // zaten GlobalMessages üzerinden çalıştığı ve mesajlar MessageId ile
+            // deduplike edilebildiği için bu sıralama değişikliği güvenlidir.
             App.ChatService.OnMessageReceived += ChatService_OnMessageReceived;
 
-            // DÜZELTME 2: İsim değişiminde hem başlığı hem de geçmiş mesajları güncelliyoruz
+            LoadHistory();
+
             _peerNameChangedHandler = (ip, oldName, newName) =>
             {
-                if (ip == _targetIp)
+                _targetName = newName;
+
+                var messagesToUpdate = ChatService.GlobalMessages
+                    .Where(m => m.SenderName == oldName || m.TargetName == oldName)
+                    .ToList();
+
+                foreach (var msg in messagesToUpdate)
                 {
-                    _targetName = newName;
-
-                    // Global mesaj listesindeki eski isme sahip mesajları bul ve yeni isimle güncelle
-                    var messagesToUpdate = ChatService.GlobalMessages
-    .Where(m => m.SenderName == oldName || m.TargetName == oldName)
-    .ToList();
-
-                    foreach (var msg in messagesToUpdate)
-                    {
-                        if (msg.SenderName == oldName) msg.SenderName = newName;
-                        if (msg.TargetName == oldName) msg.TargetName = newName;
-                    }
-
-                    // Arayüzü (UI) yeni isimler ve başlıkla yenile
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        Title = $"{_targetName} ile DM";
-                        Messages.Clear(); // Mevcut listeyi temizle
-                        LoadHistory();    // Güncel isimlerle geçmişi tekrar yükle
-                    });
+                    if (msg.SenderName == oldName) msg.SenderName = newName;
+                    if (msg.TargetName == oldName) msg.TargetName = newName;
                 }
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Title = $"{_targetName} ile DM";
+                    Messages.Clear();
+                    LoadHistory();
+                });
             };
             App.NetworkService.PeerNameChanged += _peerNameChangedHandler;
         }
@@ -68,7 +70,13 @@ namespace P2PFil.ChatModule
 
             foreach (var msg in history)
             {
-                Messages.Add(msg);
+                // Yukarıdaki sıralama değişikliğiyle teorik olarak aynı mesajın
+                // hem event üzerinden hem history üzerinden eklenmesi ihtimaline
+                // karşı basit bir güvenlik: zaten listede olan MessageId'yi atla.
+                if (!Messages.Any(m => m.MessageId == msg.MessageId))
+                {
+                    Messages.Add(msg);
+                }
             }
 
             if (Messages.Count > 0)
@@ -79,13 +87,18 @@ namespace P2PFil.ChatModule
 
         private void ChatService_OnMessageReceived(ChatMessage msg)
         {
-            // İsim eşleşiyorsa (PeerNameChanged zaten arka planda güncellediği için burası çalışır) mesajı ekrana bas
             if (msg.SenderName == _targetName)
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Messages.Add(msg);
-                    MessagesListView.ScrollTo(Messages.Count - 1);
+                    if (!Messages.Any(m => m.MessageId == msg.MessageId))
+                    {
+                        Messages.Add(msg);
+                        if (Messages.Count > 0)
+                        {
+                            MessagesListView.ScrollTo(Messages.Count - 1);
+                        }
+                    }
                 });
             }
         }
@@ -93,29 +106,56 @@ namespace P2PFil.ChatModule
         private async void OnSendClicked(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(MessageEntry.Text)) return;
-
             string text = MessageEntry.Text;
             MessageEntry.Text = string.Empty;
 
-            await App.ChatService.SendMessageAsync(_targetIp, text);
+            string currentIp = App.NetworkService.GetIpByDeviceId(_targetDeviceId);
 
-            var myMsg = new ChatMessage
+            if (string.IsNullOrWhiteSpace(currentIp))
             {
-                SenderName = App.CurrentUsername,
-                TargetName = _targetName,
-                Content = text,
-                MessageType = "Text",
-                Timestamp = DateTime.Now,
-                IsMe = true
-            };
+                await DisplayAlert("Hata", "Bu cihaz şu an ağda bulunamadı veya kullanıcı çevrimdışı.", "Tamam");
+                return;
+            }
 
-            Messages.Add(myMsg);
-            ChatService.GlobalMessages.Add(myMsg);
-            MessagesListView.ScrollTo(Messages.Count - 1);
+            try
+            {
+                // NOT: ChatService.SendMessageAsync artık başarısızlık durumunda
+                // exception'ı YUTMUYOR, yeniden fırlatıyor (bkz. ChatService.cs).
+                // Önceki sürümde hata burada asla yakalanmıyordu ve mesaj,
+                // gerçekte gönderilmemiş olsa bile aşağıdaki "başarılı gönderim"
+                // kodu çalışıp ekrana ekleniyordu. Artık catch bloğu gerçekten
+                // devreye giriyor ve kullanıcı doğru şekilde bilgilendiriliyor.
+                await App.ChatService.SendMessageAsync(currentIp, text);
+
+                var myMsg = new ChatMessage
+                {
+                    MessageId = Guid.NewGuid().ToString(),
+                    SenderName = App.CurrentUsername,
+                    TargetName = _targetName,
+                    Content = text,
+                    MessageType = "Text",
+                    Timestamp = DateTime.Now,
+                    IsMe = true
+                };
+
+                Messages.Add(myMsg);
+                ChatService.GlobalMessages.Add(myMsg);
+
+                if (Messages.Count > 0)
+                {
+                    MessagesListView.ScrollTo(Messages.Count - 1);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Hata", $"Mesaj gönderilemedi: {ex.Message}", "Tamam");
+            }
         }
 
         private async void OnAttachClicked(object sender, EventArgs e)
         {
+            Button? btn = sender as Button;
+
             try
             {
                 var result = await FilePicker.Default.PickAsync(new PickOptions
@@ -123,55 +163,65 @@ namespace P2PFil.ChatModule
                     PickerTitle = "Fotoğraf veya Video Seç"
                 });
 
-                if (result != null)
+                if (result == null) return;
+
+                var fileInfo = new FileInfo(result.FullPath);
+
+                if (fileInfo.Length > 15 * 1024 * 1024)
                 {
-                    var fileInfo = new FileInfo(result.FullPath);
+                    await DisplayAlert("Hata", "Dosya boyutu 15 MB'den büyük olamaz! Lütfen 'Dosyalar' sekmesini kullanın.", "Tamam");
+                    return;
+                }
 
-                    if (fileInfo.Length > 15 * 1024 * 1024)
-                    {
-                        await DisplayAlert("Hata", "Dosya boyutu 15 MB'den büyük olamaz! Lütfen 'Dosyalar' sekmesini kullanın.", "Tamam");
-                        return;
-                    }
+                string ext = fileInfo.Extension.ToLower();
+                string mediaType;
 
-                    string ext = fileInfo.Extension.ToLower();
-                    string mediaType = "Text";
-                    if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".gif")
-                        mediaType = "Image";
-                    else if (ext == ".mp4" || ext == ".mov" || ext == ".avi" || ext == ".mkv")
-                        mediaType = "Video";
-                    else
-                    {
-                        await DisplayAlert("Hata", "Sadece fotoğraf ve video gönderebilirsiniz.", "Tamam");
-                        return;
-                    }
+                if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".gif")
+                    mediaType = "Image";
+                else if (ext == ".mp4" || ext == ".mov" || ext == ".avi" || ext == ".mkv")
+                    mediaType = "Video";
+                else
+                {
+                    await DisplayAlert("Hata", "Sadece fotoğraf ve video gönderebilirsiniz.", "Tamam");
+                    return;
+                }
 
-                    var btn = sender as Button;
-                    if (btn != null) btn.Text = "⏳";
+                string currentIp = App.NetworkService.GetIpByDeviceId(_targetDeviceId);
 
-                    await App.ChatService.SendMediaAsync(_targetIp, result.FullPath, mediaType);
+                if (string.IsNullOrWhiteSpace(currentIp))
+                {
+                    await DisplayAlert("Hata", "Kullanıcı şu anda çevrimdışı.", "Tamam");
+                    return;
+                }
 
-                    if (btn != null) btn.Text = "📎";
+                if (btn != null) btn.Text = "⏳";
 
-                    var myMsg = new ChatMessage
-                    {
-                        SenderName = App.CurrentUsername,
-                        TargetName = _targetName,
-                        Content = result.FileName,
-                        MessageType = mediaType,
-                        LocalMediaPath = result.FullPath,
-                        Timestamp = DateTime.Now,
-                        IsMe = true
-                    };
+                await App.ChatService.SendMediaAsync(currentIp, result.FullPath, mediaType);
 
-                    Messages.Add(myMsg);
-                    ChatService.GlobalMessages.Add(myMsg);
+                if (btn != null) btn.Text = "📎";
+
+                var myMsg = new ChatMessage
+                {
+                    MessageId = Guid.NewGuid().ToString(),
+                    SenderName = App.CurrentUsername,
+                    TargetName = _targetName,
+                    Content = result.FileName,
+                    MessageType = mediaType,
+                    LocalMediaPath = result.FullPath,
+                    Timestamp = DateTime.Now,
+                    IsMe = true
+                };
+
+                Messages.Add(myMsg);
+                ChatService.GlobalMessages.Add(myMsg);
+                if (Messages.Count > 0)
+                {
                     MessagesListView.ScrollTo(Messages.Count - 1);
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Hata", "Medya gönderilemedi: " + ex.Message, "Tamam");
-                var btn = sender as Button;
                 if (btn != null) btn.Text = "📎";
             }
         }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using P2PFil.ChatModule;
+using Microsoft.Maui.Controls;
 
 namespace P2PFil;
 
@@ -12,8 +14,6 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         PeersList.ItemsSource = Peers;
 
-        // DÜZELTME 1: Event dinleyicilerini buraya taşıdık! 
-        // Böylece sen başka sayfadayken bile MainPage arka planda isim değişikliklerini duymaya devam eder.
         App.NetworkService.PeerFound += NetworkService_PeerFound;
         App.NetworkService.PeerNameChanged += NetworkService_PeerNameChanged;
     }
@@ -22,7 +22,6 @@ public partial class MainPage : ContentPage
     {
         base.OnAppearing();
 
-        // OnAppearing içinde sadece UI başlangıç ayarlarını bırakıyoruz.
         if (!string.IsNullOrWhiteSpace(App.CurrentUsername) && App.CurrentUsername.Length >= 3)
         {
             UsernameEntry.Text = App.CurrentUsername;
@@ -35,8 +34,6 @@ public partial class MainPage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        // DÜZELTME 2: Buradaki abonelik iptallerini SİLDİK. 
-        // Böylece sayfadan çıkınca olayları dinlemeyi sağır gibi bırakmayacak.
     }
 
     private void NetworkService_PeerFound(string name)
@@ -55,8 +52,6 @@ public partial class MainPage : ContentPage
             int index = Peers.IndexOf(oldName);
             if (index != -1)
             {
-                // DÜZELTME 3: UI'ın kesinlikle değiştiğini anlaması için (garanti yöntem)
-                // Eski ismi siliyoruz ve yeni ismi aynı sıraya ekliyoruz.
                 Peers.RemoveAt(index);
                 Peers.Insert(index, newName);
             }
@@ -68,8 +63,8 @@ public partial class MainPage : ContentPage
         var selectedName = e.CurrentSelection.FirstOrDefault() as string;
         if (selectedName == null) return;
 
-        string ip = App.NetworkService.GetIpByName(selectedName);
-        await Navigation.PushAsync(new ChatPage(ip, selectedName));
+        string deviceId = App.NetworkService.GetDeviceIdByName(selectedName);
+        await Navigation.PushAsync(new ChatPage(deviceId, selectedName));
 
         PeersList.SelectedItem = null;
     }
@@ -94,6 +89,6 @@ public partial class MainPage : ContentPage
 
     private async void OnGoToFilesClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(FilesPage), animate: true);
+        await Shell.Current.GoToAsync("FilesPage", animate: true);
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace P2PFil.ChatModule
 {
@@ -36,6 +38,24 @@ namespace P2PFil.ChatModule
         private static readonly Lazy<SessionManager> _instance = new(() => new SessionManager());
         public static SessionManager Instance => _instance.Value;
         private readonly ConcurrentDictionary<string, SessionInfo> _sessions = new();
+        private readonly CancellationTokenSource _cleanupCts = new();
+
+        private SessionManager()
+        {
+            // DÜZELTME: Bellek sızıntısını önlemek amacıyla periyodik temizleme döngüsü tetiklendi
+            Task.Run(async () =>
+            {
+                while (!_cleanupCts.Token.IsCancellationRequested)
+                {
+                    try
+                    {
+                        await Task.Delay(TimeSpan.FromMinutes(10), _cleanupCts.Token);
+                        CleanupExpiredSessions();
+                    }
+                    catch { break; }
+                }
+            });
+        }
 
         public void CreateOrUpdateSession(IPAddress remoteIp, byte[] aesKey, string fingerprint)
         {
@@ -106,6 +126,12 @@ namespace P2PFil.ChatModule
             _sessions.Clear();
         }
 
-        public void Dispose() => ClearAll();
+        public void Dispose()
+        {
+            _cleanupCts.Cancel();
+            _cleanupCts.Dispose();
+            ClearAll();
+            GC.SuppressFinalize(this);
+        }
     }
 }

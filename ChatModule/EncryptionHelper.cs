@@ -10,26 +10,32 @@ namespace P2PFil.ChatModule
         private const int NonceSize = 12;
         private const int TagSize = 16;
 
-        public static string Encrypt(string plainText, byte[] key)
+        public static string Encrypt(string plainText, byte[] key, byte[]? associatedData = null)
         {
             if (plainText == null) throw new ArgumentNullException(nameof(plainText));
-            return Convert.ToBase64String(EncryptBytes(Encoding.UTF8.GetBytes(plainText), key));
+            return Convert.ToBase64String(EncryptBytes(Encoding.UTF8.GetBytes(plainText), key, associatedData));
         }
 
-        public static string Decrypt(string cipherText, byte[] key)
+        public static string Decrypt(string cipherText, byte[] key, byte[]? associatedData = null)
         {
             if (cipherText == null) throw new ArgumentNullException(nameof(cipherText));
-            return Encoding.UTF8.GetString(DecryptBytes(Convert.FromBase64String(cipherText), key));
+            return Encoding.UTF8.GetString(DecryptBytes(Convert.FromBase64String(cipherText), key, associatedData));
         }
 
-        // C# 12 Uyumluluğu: byte[] için varsayılan şifreleme metodu
-        public static byte[] EncryptBytes(byte[] plainBytes, byte[] key)
+        public static byte[] EncryptBytes(byte[] plainBytes, byte[] key, byte[]? associatedData = null)
         {
-            return EncryptBytes(plainBytes, plainBytes.Length, key);
+            return EncryptBytes(plainBytes, plainBytes.Length, key, associatedData);
         }
 
-        // C# 12 Uyumluluğu: Span yerine Array+Length alarak async metotlardan güvenli çağrı sağlar
-        public static byte[] EncryptBytes(byte[] plainBytes, int length, byte[] key)
+        // NOT (Sertleştirme): associatedData parametresi eklendi (varsayılan null,
+        // yani mevcut davranışla TAM GERİYE UYUMLU). İleride mesajı belirli bir
+        // bağlama (ör. gönderen DeviceId + sıra numarası) kriptografik olarak
+        // bağlamak istenirse, bu parametre ile AES-GCM'in AAD alanı kullanılabilir.
+        // Bu, ciphertext'in başka bir bağlamda "kesilip yapıştırılmasını"
+        // (cut-and-paste / context confusion) engeller. Şu an hiçbir çağrı
+        // noktası bunu kullanmıyor; var olan protokolü bozmamak için opsiyonel
+        // bırakıldı.
+        public static byte[] EncryptBytes(byte[] plainBytes, int length, byte[] key, byte[]? associatedData = null)
         {
             if (key == null || key.Length != 32) throw new ArgumentException("Key 32 byte olmalı.");
 
@@ -41,8 +47,7 @@ namespace P2PFil.ChatModule
 
             using (var aesGcm = new AesGcm(key, TagSize))
             {
-                // Senkron bir metot içinde AsSpan kullanmak C# 12'de tamamen güvenlidir
-                aesGcm.Encrypt(nonce, plainBytes.AsSpan(0, length), cipherText, tag);
+                aesGcm.Encrypt(nonce, plainBytes.AsSpan(0, length), cipherText, tag, associatedData ?? ReadOnlySpan<byte>.Empty);
             }
 
             byte[] result = new byte[NonceSize + TagSize + cipherText.Length];
@@ -52,7 +57,7 @@ namespace P2PFil.ChatModule
             return result;
         }
 
-        public static byte[] DecryptBytes(byte[] cipherBytes, byte[] key)
+        public static byte[] DecryptBytes(byte[] cipherBytes, byte[] key, byte[]? associatedData = null)
         {
             if (key == null || key.Length != 32) throw new ArgumentException("Key 32 byte olmalı.");
             if (cipherBytes.Length < NonceSize + TagSize) throw new CryptographicException("Veri bozuk.");
@@ -71,7 +76,7 @@ namespace P2PFil.ChatModule
 
             using (var aesGcm = new AesGcm(key, TagSize))
             {
-                aesGcm.Decrypt(nonce, cipherText, tag, plainBytes);
+                aesGcm.Decrypt(nonce, cipherText, tag, plainBytes, associatedData ?? ReadOnlySpan<byte>.Empty);
             }
             return plainBytes;
         }

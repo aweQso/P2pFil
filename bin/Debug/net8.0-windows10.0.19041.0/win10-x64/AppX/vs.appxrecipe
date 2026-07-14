@@ -18,36 +18,36 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AppX</LayoutDir>
-    <RegisteredManifestChecksum>716EABB38EC1DC6F80F56BD62CE6FBBC150C01E212DCBD115A6BB2D5AB85ED04</RegisteredManifestChecksum>
-    <RegisteredPackageMoniker>com.companyname.p2pfil_8.0.5.0_x64__d12nzgzx60cqc</RegisteredPackageMoniker>
+    <RegisteredManifestChecksum>80E4D8855F4E1ED43C89C4C9E67514E32CC7F88BB218D7798EF3773C55C3C907</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>com.companyname.p2pfil_11.12.13.0_x64__d12nzgzx60cqc</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>com.companyname.p2pfil_d12nzgzx60cqc!App</RegisteredUserModeAppID>
     <RegisteredPackageID>com.companyname.p2pfil</RegisteredPackageID>
     <RegisteredPackagePublisher>CN=alpw9</RegisteredPackagePublisher>
-    <RegisteredVersion>8.0.5.0</RegisteredVersion>
+    <RegisteredVersion>11.12.13.0</RegisteredVersion>
   </PropertyGroup>
   <ItemGroup>
     <AppXManifest Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2026-07-13T16:41:16.639</Modified>
+      <Modified>2026-07-14T19:00:56.913</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2026-07-13T16:36:45.260</Modified>
+      <Modified>2026-07-14T19:00:56.388</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\P2PFil.runtimeconfig.json">
       <PackagePath>P2PFil.runtimeconfig.json</PackagePath>
-      <Modified>2026-07-13T16:36:45.092</Modified>
+      <Modified>2026-07-14T19:00:55.912</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\P2PFil.dll">
       <PackagePath>P2PFil.dll</PackagePath>
-      <Modified>2026-07-13T16:41:15.754</Modified>
+      <Modified>2026-07-14T19:00:53.464</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>P2PFil.exe</PackagePath>
-      <Modified>2026-07-13T16:41:15.760</Modified>
+      <Modified>2026-07-14T19:00:53.627</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\Resources\Raw\AboutAssets.txt">
       <PackagePath>AboutAssets.txt</PackagePath>
@@ -287,7 +287,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\P2PFil.deps.json">
       <PackagePath>P2PFil.deps.json</PackagePath>
-      <Modified>2026-07-13T16:36:45.086</Modified>
+      <Modified>2026-07-14T19:00:55.870</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.19041.57\lib\net8.0\Microsoft.Windows.SDK.NET.dll">
       <PackagePath>Microsoft.Windows.SDK.NET.dll</PackagePath>

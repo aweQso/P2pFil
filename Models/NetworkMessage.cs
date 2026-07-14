@@ -5,8 +5,14 @@ namespace P2PFil.Models
 {
     public class NetworkMessage
     {
-        public string Type { get; set; } = "FILE_LIST"; // Varsayılan tip mesajı[cite: 16]
-        public string Sender { get; set; } = string.Empty; //[cite: 16]
-        public List<SharedFile> Files { get; set; } = new List<SharedFile>(); //[cite: 16]
+        public string Type { get; set; } = "FILE_LIST";
+
+        // Kullanıcı adı
+        public string Sender { get; set; } = "";
+
+        // Kalıcı cihaz kimliği
+        public string DeviceId { get; set; } = "";
+
+        public List<SharedFile> Files { get; set; } = new();
     }
 }

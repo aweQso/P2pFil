@@ -3,108 +3,150 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using Microsoft.Maui.Storage;
 
 namespace P2PFil.ChatModule
 {
     public enum TrustResult
     {
-        NewPeerTrusted, // İlk bağlantı, fingerprint kaydedildi (TOFU)
-        Matches,        // Daha önce kaydedilen fingerprint ile eşleşiyor
-        Mismatch        // UYARI: Kayıtlı fingerprint ile eşleşmiyor - olası MITM
+        NewPeerTrusted,
+        Matches,
+        Mismatch
     }
 
-    // GÜVENLİK DÜZELTMESİ (MITM Koruması): Trust-On-First-Use (TOFU) tabanlı basit
-    // bir eş kimlik doğrulama katmanı. SSH'ın known_hosts dosyasına benzer şekilde
-    // çalışır: bir eşle ilk kez konuşulduğunda ECDH public key fingerprint'i kalıcı
-    // olarak kaydedilir; sonraki bağlantılarda fingerprint değişmişse (ör. aktif bir
-    // MITM saldırganı araya girdiyse) bağlantı reddedilir.
-    //
-    // ÖNEMLİ SINIRLAMA: TOFU, bir eşle yapılan İLK bağlantının kendisini MITM'e karşı
-    // koruyamaz (klasik TOFU sınırlaması - tıpkı SSH'de olduğu gibi). Tam koruma için
-    // fingerprint'in ilk bağlantıda kullanıcılar tarafından ayrı bir kanaldan (yüz
-    // yüze, telefonla vb.) karşılaştırılması gerekir. Bu sınıf en azından TEKRAR
-    // EDEN/AKTİF MITM'i ve oturum ele geçirmeyi tespit edip engeller; sıfırdan tam
-    // koruma sağlamaz.
+    public class PeerRecord
+    {
+        public string Fingerprint { get; set; } = string.Empty;
+        public string LastKnownName { get; set; } = string.Empty;
+    }
+
     public sealed class PeerTrustStore
     {
         private static readonly Lazy<PeerTrustStore> _instance = new(() => new PeerTrustStore());
         public static PeerTrustStore Instance => _instance.Value;
 
-        private readonly ConcurrentDictionary<string, string> _knownFingerprints = new();
+        private readonly ConcurrentDictionary<string, PeerRecord> _peers = new();
         private readonly string _storePath;
         private readonly object _fileLock = new();
 
         private PeerTrustStore()
         {
-            try
-            {
-                _storePath = Path.Combine(FileSystem.AppDataDirectory, "trusted_peers.json");
-                Load();
-            }
-            catch
-            {
-                _storePath = string.Empty; // Kalıcı depolama kullanılamıyorsa bellek-içi devam et
-            }
+            _storePath = Path.Combine(FileSystem.AppDataDirectory, "trusted_peers.json");
+            Load();
         }
 
         private void Load()
         {
-            if (string.IsNullOrEmpty(_storePath) || !File.Exists(_storePath)) return;
-            try
+            if (File.Exists(_storePath))
             {
-                string json = File.ReadAllText(_storePath);
-                var data = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-                if (data != null)
+                try
                 {
-                    foreach (var kvp in data)
-                        _knownFingerprints[kvp.Key] = kvp.Value;
+                    string json = File.ReadAllText(_storePath);
+                    var data = JsonSerializer.Deserialize<Dictionary<string, PeerRecord>>(json);
+                    if (data != null)
+                    {
+                        foreach (var kvp in data)
+                            _peers[kvp.Key] = kvp.Value;
+                    }
                 }
-            }
-            catch
-            {
-                // Bozuk/okunamayan dosya - sıfırdan başla
+                catch (Exception ex)
+                {
+                    // DÜZELTME: Önceki sürümde bu catch tamamen sessizdi. Dosya
+                    // bozuksa (ör. yarım kalmış bir yazma sonrası) TÜM güven
+                    // deposu sessizce sıfırlanıyor ve her peer için TOFU penceresi
+                    // yeniden açılıyordu. En azından bunu loglayarak sorunun
+                    // fark edilmesini sağlıyoruz.
+                    System.Diagnostics.Debug.WriteLine($"PeerTrustStore yüklenemedi (dosya bozuk olabilir): {ex.Message}");
+                }
             }
         }
 
         private void Save()
         {
-            if (string.IsNullOrEmpty(_storePath)) return;
-            try
+            lock (_fileLock)
             {
-                lock (_fileLock)
+                try
                 {
-                    var snapshot = new Dictionary<string, string>(_knownFingerprints);
-                    File.WriteAllText(_storePath, JsonSerializer.Serialize(snapshot));
+                    var snapshot = new Dictionary<string, PeerRecord>(_peers);
+                    string json = JsonSerializer.Serialize(snapshot);
+
+                    // DÜZELTME (Atomik Yazma): Önceki sürüm doğrudan
+                    // File.WriteAllText(_storePath, ...) kullanıyordu. Yazma
+                    // sırasında uygulama çökerse/enerji kesilirse dosya yarım
+                    // kalabiliyor ve bir sonraki açılışta Load() bunu sessizce
+                    // yutup TÜM güven deposunu sıfırlıyordu (yeniden MITM
+                    // penceresi açılması anlamına gelir). Artık temp dosyaya
+                    // yazılıp ardından atomik olarak yerine taşınıyor.
+                    string tempPath = _storePath + ".tmp";
+                    File.WriteAllText(tempPath, json);
+
+                    if (File.Exists(_storePath))
+                        File.Replace(tempPath, _storePath, null);
+                    else
+                        File.Move(tempPath, _storePath);
                 }
-            }
-            catch
-            {
-                // Kalıcı kaydetme başarısız olsa da uygulama çalışmaya devam etmeli
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"PeerTrustStore kaydedilemedi: {ex.Message}");
+                }
             }
         }
 
-        // peerKey: genellikle uzak IP adresi. fingerprint: KeyExchangeService'ten dönen SHA256 fingerprint.
-        public TrustResult VerifyOrTrust(string peerKey, string fingerprint)
+        public TrustResult VerifyOrTrust(string deviceId, string fingerprint)
         {
-            if (string.IsNullOrEmpty(peerKey) || string.IsNullOrEmpty(fingerprint))
+            if (string.IsNullOrWhiteSpace(deviceId) || string.IsNullOrWhiteSpace(fingerprint))
                 return TrustResult.Mismatch;
 
-            if (_knownFingerprints.TryGetValue(peerKey, out var known))
+            if (_peers.TryGetValue(deviceId, out var record))
             {
-                return known == fingerprint ? TrustResult.Matches : TrustResult.Mismatch;
+                if (string.IsNullOrEmpty(record.Fingerprint))
+                {
+                    record.Fingerprint = fingerprint;
+                    Save();
+                    return TrustResult.NewPeerTrusted;
+                }
+                return record.Fingerprint == fingerprint ? TrustResult.Matches : TrustResult.Mismatch;
             }
 
-            _knownFingerprints[peerKey] = fingerprint;
+            _peers[deviceId] = new PeerRecord { Fingerprint = fingerprint };
             Save();
             return TrustResult.NewPeerTrusted;
         }
 
-        // Bir eşin kaydını sil (ör. kullanıcı "bu cihazı unut" derse ya da IP
-        // yeniden atandığında kayıt elle temizlenmek istenirse).
-        public void Forget(string peerKey)
+        public bool ValidateOrBindName(string username, string deviceId)
         {
-            if (_knownFingerprints.TryRemove(peerKey, out _))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(deviceId))
+                return false;
+
+            foreach (var kvp in _peers)
+            {
+                if (kvp.Key != deviceId && kvp.Value.LastKnownName == username)
+                    return false;
+            }
+
+            if (_peers.TryGetValue(deviceId, out var record))
+            {
+                if (record.LastKnownName != username)
+                {
+                    record.LastKnownName = username;
+                    Save();
+                }
+            }
+            else
+            {
+                _peers[deviceId] = new PeerRecord { LastKnownName = username };
                 Save();
+            }
+
+            return true;
+        }
+
+        public void Forget(string deviceId)
+        {
+            if (_peers.TryRemove(deviceId, out _))
+            {
+                Save();
+            }
         }
     }
 }
