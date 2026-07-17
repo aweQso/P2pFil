@@ -1,91 +1,124 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:P2PFil.Controls"
              x:Class="P2PFil.MainPage"
              Shell.TabBarIsVisible="False"
              Shell.NavBarIsVisible="False">
 
     <ContentPage.Background>
-        <!-- Karanlık ve derin arka plan -->
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#0F172A" Offset="0.0" />
-            <GradientStop Color="#1E293B" Offset="0.5" />
-            <GradientStop Color="#0F172A" Offset="1.0" />
+            <GradientStop Color="#020617" Offset="0.0" />
+            <GradientStop Color="#090D16" Offset="0.6" />
+            <GradientStop Color="#020617" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 
     <Grid>
-        <VerticalStackLayout Padding="30,50,30,100" Spacing="25" VerticalOptions="Start">
-            <Label Text="P2P Transfer" FontSize="34" FontAttributes="Bold" HorizontalOptions="Center" TextColor="White" />
-            <Label Text="Ağdaki cihazları bul ve güvenle mesajlaş" FontSize="13" HorizontalOptions="Center" TextColor="#94A3B8" Margin="0,-20,0,0" />
-
-            <!-- Cam Efektli Kullanıcı Adı Girişi -->
-            <Border Background="#15FFFFFF" Stroke="#30FFFFFF" StrokeThickness="1" Margin="0,10">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="18" />
-                </Border.StrokeShape>
-                <Entry x:Name="UsernameEntry" Placeholder="Kullanıcı Adınız (3-32)" PlaceholderColor="#94A3B8" TextColor="White" MaxLength="32" Margin="15,5" TextChanged="OnUsernameChanged"/>
-            </Border>
-
-            <Button x:Name="StartDiscoveryButton" Text="Ağda Cihaz Ara" Clicked="OnStartDiscoveryClicked" BackgroundColor="#6366F1" TextColor="White" FontAttributes="Bold" CornerRadius="16" HeightRequest="55" IsEnabled="False">
-                <Button.Shadow>
-                    <Shadow Brush="#6366F1" Offset="0,8" Radius="15" Opacity="0.4" />
-                </Button.Shadow>
-            </Button>
-
-            <Label Text="Bulunan Cihazlar (Mesajlaşmak için dokun)" FontAttributes="Bold" FontSize="14" TextColor="#F8FAFC" Margin="0,15,0,0" />
-
-            <!-- Cam Efektli Cihaz Listesi -->
-            <CollectionView x:Name="PeersList" HeightRequest="250" SelectionMode="Single" SelectionChanged="OnPeerSelected">
-                <CollectionView.EmptyView>
-                    <Label Text="Ağ dinleniyor, cihaz bekleniyor..." TextColor="#64748B" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,20" />
-                </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="0,6" Padding="15" Background="#15FFFFFF" Stroke="#30FFFFFF" StrokeThickness="1">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="16" />
-                            </Border.StrokeShape>
-                            <Grid ColumnDefinitions="Auto, *, Auto" VerticalOptions="Center">
-                                <Frame Grid.Column="0" BackgroundColor="#306366F1" CornerRadius="12" Padding="10" HasShadow="False">
-                                    <Label Text="📱" FontSize="16" />
-                                </Frame>
-                                <Label Grid.Column="1" Text="{Binding .}" FontAttributes="Bold" FontSize="16" TextColor="#E2E8F0" VerticalOptions="Center" Margin="15,0,0,0"/>
-                                <Path Grid.Column="2" Fill="#94A3B8" Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" VerticalOptions="Center"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-
-        <!-- Alt Yüzen Menü (Glassmorphism) -->
-        <Border VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,30" WidthRequest="260" HeightRequest="70" Background="#20FFFFFF" Stroke="#40FFFFFF" StrokeThickness="1">
-            <Border.Shadow>
-                <Shadow Brush="Black" Offset="0,15" Radius="30" Opacity="0.4" />
-            </Border.Shadow>
+        <Border x:Name="AnimatedContent" Opacity="0" Margin="20,40,20,100" Padding="20" Background="#090D16" Stroke="#1E293B" StrokeThickness="1.5" VerticalOptions="Fill">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="35" />
+                <RoundRectangle CornerRadius="24" />
             </Border.StrokeShape>
-            <Grid ColumnDefinitions="*, *" Padding="6">
-                <!-- Ağ Butonu (Aktif) -->
-                <Border Grid.Column="0" Background="#30FFFFFF" Stroke="#40FFFFFF" StrokeThickness="1">
+
+            <Grid RowDefinitions="Auto, Auto, Auto, Auto, *">
+                <!-- Row 0: Profil Başlığı -->
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto" VerticalOptions="Center">
+                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                        <Label Text="P2P Transfer" FontSize="30" FontAttributes="Bold" TextColor="White" />
+                        <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                            <Ellipse Fill="#10B981" WidthRequest="8" HeightRequest="8" VerticalOptions="Center" />
+                            <Label Text="Güvenli ağdasın" FontSize="13" TextColor="#94A3B8" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <Border Grid.Column="1" WidthRequest="50" HeightRequest="50" StrokeShape="RoundRectangle 25" StrokeThickness="2" Stroke="#10B981" Background="#111827">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnProfileAvatarTapped" />
+                        </Border.GestureRecognizers>
+                        <Image x:Name="MyProfileImageMain" Aspect="AspectFill" />
+                    </Border>
+                </Grid>
+
+                <!-- Row 1: Bilgi Kartı -->
+                <Border Grid.Row="1" Background="#111827" Stroke="#1E293B" StrokeThickness="1" Padding="15,10" Margin="0,15,0,0">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="30" />
+                        <RoundRectangle CornerRadius="12" />
                     </Border.StrokeShape>
-                    <StackLayout VerticalOptions="Center" Spacing="2">
-                        <Path Fill="White" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" Data="M12,21L15.6,16.2C14.6,15.45 13.35,15 12,15C10.65,15 9.4,15.45 8.4,16.2L12,21M12,3C7.95,3 4.21,4.34 1.2,6.6L3,9C5.5,7.12 8.62,6 12,6C15.38,6 18.5,7.12 21,9L22.8,6.6C19.79,4.34 16.05,3 12,3M12,9C9.3,9 6.81,9.89 4.8,11.4L6.6,13.8C8.1,12.67 9.97,12 12,12C14.03,12 15.9,12.67 17.4,13.8L19.2,11.4C17.19,9.89 14.7,9 12,9Z" />
-                        <Label Text="Ağ" TextColor="White" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    </StackLayout>
+                    <Label Text="Profil üzerinden belirlenen isimle ağa bağlanılıyor." FontSize="12" TextColor="#94A3B8" HorizontalOptions="Center"/>
                 </Border>
-                <!-- Dosyalar Butonu (Pasif) -->
-                <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnGoToFilesClicked" />
-                    </StackLayout.GestureRecognizers>
-                    <Path Fill="#94A3B8" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" Data="M20 6H12L10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12Z" />
-                    <Label Text="Dosyalar" TextColor="#94A3B8" FontSize="11" FontAttributes="Bold" HorizontalOptions="Center"/>
-                </StackLayout>
+
+                <!-- Row 2: Arama Kutusu -->
+                <Border Grid.Row="2" Background="#111827" Stroke="#1E293B" StrokeThickness="1" Padding="12,0" Margin="0,15,0,0" HeightRequest="46">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <Label Grid.Column="0" Text="🔍" FontSize="15" VerticalOptions="Center" Margin="0,0,8,0" />
+                        <Entry Grid.Column="1" x:Name="SearchEntry" Placeholder="Cihaz ara..." PlaceholderColor="#64748B" TextColor="White"
+                               BackgroundColor="Transparent" VerticalOptions="Center" TextChanged="OnSearchTextChanged" />
+                        <Button Grid.Column="2" x:Name="ClearSearchButton" Text="✕" IsVisible="False" BackgroundColor="Transparent"
+                                TextColor="#64748B" FontSize="14" WidthRequest="30" Padding="0" Clicked="OnClearSearchClicked" />
+                    </Grid>
+                </Border>
+
+                <!-- Row 3: Başlık + Sayaç -->
+                <Grid Grid.Row="3" ColumnDefinitions="*, Auto" Margin="0,18,0,0">
+                    <Label Grid.Column="0" Text="Bulunan Cihazlar" FontAttributes="Bold" FontSize="14" TextColor="#F8FAFC" VerticalOptions="Center" />
+                    <Border Grid.Column="1" Background="#111827" Stroke="#1E293B" StrokeThickness="1" Padding="10,3">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Label x:Name="PeerCountLabel" Text="0" FontSize="12" FontAttributes="Bold" TextColor="#10B981" />
+                    </Border>
+                </Grid>
+
+                <!-- Row 4: Peers Listesi -->
+                <RefreshView Grid.Row="4" x:Name="PeersRefreshView" Refreshing="OnPeersRefreshing" Margin="0,10,0,0">
+                    <CollectionView x:Name="PeersList" SelectionMode="Single" SelectionChanged="OnPeerSelected">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="10" Margin="0,40,0,0">
+                                <Label Text="📡" FontSize="34" HorizontalOptions="Center" Opacity="0.6" />
+                                <Label Text="Ağ dinleniyor..." TextColor="#64748B" HorizontalOptions="Center" FontAttributes="Bold" />
+                                <Label Text="Aynı ağdaki cihazlar burada görünecek" TextColor="#475569" FontSize="12" HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Mesaj" BackgroundColor="#6366F1" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenChatCommand}" CommandParameter="{Binding .}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Border Margin="0,6" Padding="15" Background="#111827" Stroke="#1E293B" StrokeThickness="1.5">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="16" />
+                                        </Border.StrokeShape>
+                                        <Grid ColumnDefinitions="Auto, *, Auto" VerticalOptions="Center">
+                                            <Grid Grid.Column="0">
+                                                <Border StrokeShape="RoundRectangle 20"
+                                                        Stroke="#334155"
+                                                        StrokeThickness="1"
+                                                        WidthRequest="40"
+                                                        HeightRequest="40"
+                                                        Background="#090D16">
+                                                    <Image Source="{Binding ProfileImagePath}" Aspect="AspectFill" />
+                                                </Border>
+                                            </Grid>
+                                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Margin="15,0,0,0">
+                                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" TextColor="#E2E8F0" />
+                                            </VerticalStackLayout>
+                                            <Path Grid.Column="2" Fill="#10B981" Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" VerticalOptions="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
             </Grid>
         </Border>
+
+        <controls:CustomTabBar x:Name="MyCustomTabBar" />
     </Grid>
 </ContentPage>

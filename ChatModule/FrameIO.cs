@@ -80,5 +80,57 @@ namespace P2PFil.ChatModule
                 throw new InvalidDataException($"{errorMessage} ({len} bytes)");
             return await ReadExactAsync(stream, len, ct);
         }
+
+        // YENİ: Zero-allocation büyük dosya transferi için ArrayPool tabanlı çerçeve okuma.
+        // Var olan ReadFrameAsync ile TAMAMEN AYNI tel-protokolünü (uzunluk + veri) kullanır;
+        // tek fark, dönen buffer'ın System.Buffers.ArrayPool<byte>.Shared'dan kiralanmış
+        // olması ve GERÇEK VERİ BOYUTUNUN 'length' out parametresiyle ayrıca dönmesidir
+        // (kiralanan buffer genelde istenenden BÜYÜK olur, bu yüzden buf.Length güvenilir değildir).
+        //
+        // ÇAĞIRAN SORUMLULUĞU: dönen buffer, işi bitince MUTLAKA
+        // ArrayPool<byte>.Shared.Return(buffer) ile iade edilmelidir (try/finally içinde).
+        // Bu metot şifreleme/el sıkışma protokolüne dokunmaz; sadece byte taşıma
+        // katmanında ekstra tahsis yapmaktan kaçınır.
+        public static async Task<(byte[] Buffer, int Length)> ReadFramePooledAsync(
+            NetworkStream stream, int maxSize, CancellationToken ct,
+            string errorMessage = "Geçersiz çerçeve boyutu tespit edildi.")
+        {
+            int len = await ReadInt32Async(stream, ct);
+            if (len < 0 || len > maxSize)
+                throw new InvalidDataException($"{errorMessage} ({len} bytes)");
+
+            if (len == 0)
+                return (Array.Empty<byte>(), 0);
+
+            byte[] buf = System.Buffers.ArrayPool<byte>.Shared.Rent(len);
+            int total = 0;
+            try
+            {
+                while (total < len)
+                {
+                    int read = await stream.ReadAsync(buf, total, len - total, ct);
+                    if (read == 0) throw new IOException("Bağlantı beklenenden erken kapandı.");
+                    total += read;
+                }
+            }
+            catch
+            {
+                System.Buffers.ArrayPool<byte>.Shared.Return(buf);
+                throw;
+            }
+
+            return (buf, total);
+        }
+
+        // YENİ: ArrayPool'dan kiralanmış bir buffer'ı (dizinin tamamı değil,
+        // sadece 'length' kadarı geçerli veri) çerçeve olarak yazar. Var olan
+        // WriteFrameAsync ile aynı tel-protokolü, ekstra kopyalama olmadan.
+        public static async Task WriteFramePooledAsync(NetworkStream stream, byte[] rentedBuffer, int length, CancellationToken ct)
+        {
+            await WriteInt32Async(stream, length, ct);
+            if (length > 0)
+                await stream.WriteAsync(rentedBuffer, 0, length, ct);
+            await stream.FlushAsync(ct);
+        }
     }
 }

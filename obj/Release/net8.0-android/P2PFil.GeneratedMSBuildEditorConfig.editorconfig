@@ -36,6 +36,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = P2PFil.ChatModule.ChatPage
 build_metadata.AdditionalFiles.TargetPath = ChatModule\ChatPage.xaml
 build_metadata.AdditionalFiles.RelativePath = ChatModule\ChatPage.xaml
 
+[C:/Users/alpw9/source/repos/P2PFil/P2PFil/Controls/CustomTabBar.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = P2PFil.Controls.CustomTabBar.xaml
+build_metadata.AdditionalFiles.TargetPath = Controls\CustomTabBar.xaml
+build_metadata.AdditionalFiles.RelativePath = Controls\CustomTabBar.xaml
+
 [C:/Users/alpw9/source/repos/P2PFil/P2PFil/FilesPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = P2PFil.FilesPage.xaml
@@ -47,6 +53,12 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = P2PFil.MainPage.xaml
 build_metadata.AdditionalFiles.TargetPath = MainPage.xaml
 build_metadata.AdditionalFiles.RelativePath = MainPage.xaml
+
+[C:/Users/alpw9/source/repos/P2PFil/P2PFil/ProfilePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = P2PFil.ProfilePage.xaml
+build_metadata.AdditionalFiles.TargetPath = ProfilePage.xaml
+build_metadata.AdditionalFiles.RelativePath = ProfilePage.xaml
 
 [C:/Users/alpw9/source/repos/P2PFil/P2PFil/Resources/Styles/Colors.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml

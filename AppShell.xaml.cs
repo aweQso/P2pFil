@@ -1,4 +1,6 @@
-﻿namespace P2PFil;
+﻿using P2PFil; // Profil sayfanın bulunduğu klasörün namespace'i buraya gelmeli.
+
+namespace P2PFil;
 
 public partial class AppShell : Shell
 {
@@ -6,7 +8,8 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        // FilesPage'in rotasını sisteme tanıtıyoruz ki geçişte "Route not found" hatası vermesin
+        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
         Routing.RegisterRoute(nameof(FilesPage), typeof(FilesPage));
+        Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage)); // using eklendiği için artık tanır.
     }
 }

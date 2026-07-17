@@ -61,158 +61,158 @@
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\f\OpenSans-Semibold.ttf">
       <PackagePath>OpenSans-Semibold.ttf</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appicon.ico">
-      <PackagePath>appicon.ico</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-100.png">
-      <PackagePath>appiconLargeTile.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-125.png">
-      <PackagePath>appiconLargeTile.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-150.png">
-      <PackagePath>appiconLargeTile.scale-150.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-200.png">
-      <PackagePath>appiconLargeTile.scale-200.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-400.png">
-      <PackagePath>appiconLargeTile.scale-400.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-16.png">
-      <PackagePath>appiconLogo.altform-lightunplated_targetsize-16.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-24.png">
-      <PackagePath>appiconLogo.altform-lightunplated_targetsize-24.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-256.png">
-      <PackagePath>appiconLogo.altform-lightunplated_targetsize-256.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-32.png">
-      <PackagePath>appiconLogo.altform-lightunplated_targetsize-32.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-48.png">
-      <PackagePath>appiconLogo.altform-lightunplated_targetsize-48.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-16.png">
-      <PackagePath>appiconLogo.altform-unplated_targetsize-16.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-24.png">
-      <PackagePath>appiconLogo.altform-unplated_targetsize-24.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-256.png">
-      <PackagePath>appiconLogo.altform-unplated_targetsize-256.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-32.png">
-      <PackagePath>appiconLogo.altform-unplated_targetsize-32.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-48.png">
-      <PackagePath>appiconLogo.altform-unplated_targetsize-48.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-100.png">
-      <PackagePath>appiconLogo.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-125.png">
-      <PackagePath>appiconLogo.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-150.png">
-      <PackagePath>appiconLogo.scale-150.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-200.png">
-      <PackagePath>appiconLogo.scale-200.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-400.png">
-      <PackagePath>appiconLogo.scale-400.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-16.png">
-      <PackagePath>appiconLogo.targetsize-16.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-24.png">
-      <PackagePath>appiconLogo.targetsize-24.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-256.png">
-      <PackagePath>appiconLogo.targetsize-256.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-32.png">
-      <PackagePath>appiconLogo.targetsize-32.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-48.png">
-      <PackagePath>appiconLogo.targetsize-48.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-100.png">
-      <PackagePath>appiconMediumTile.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-125.png">
-      <PackagePath>appiconMediumTile.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-150.png">
-      <PackagePath>appiconMediumTile.scale-150.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-200.png">
-      <PackagePath>appiconMediumTile.scale-200.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-400.png">
-      <PackagePath>appiconMediumTile.scale-400.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-100.png">
-      <PackagePath>appiconSmallTile.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-125.png">
-      <PackagePath>appiconSmallTile.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-150.png">
-      <PackagePath>appiconSmallTile.scale-150.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-200.png">
-      <PackagePath>appiconSmallTile.scale-200.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-400.png">
-      <PackagePath>appiconSmallTile.scale-400.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-100.png">
-      <PackagePath>appiconStoreLogo.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-125.png">
-      <PackagePath>appiconStoreLogo.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-150.png">
-      <PackagePath>appiconStoreLogo.scale-150.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-200.png">
-      <PackagePath>appiconStoreLogo.scale-200.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-400.png">
-      <PackagePath>appiconStoreLogo.scale-400.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-100.png">
-      <PackagePath>appiconWideTile.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-125.png">
-      <PackagePath>appiconWideTile.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-150.png">
-      <PackagePath>appiconWideTile.scale-150.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-200.png">
-      <PackagePath>appiconWideTile.scale-200.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-400.png">
-      <PackagePath>appiconWideTile.scale-400.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-100.png">
-      <PackagePath>dotnet_bot.scale-100.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-125.png">
-      <PackagePath>dotnet_bot.scale-125.png</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-150.png">
-      <PackagePath>dotnet_bot.scale-150.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-400.png">
+      <PackagePath>dotnet_bot.scale-400.png</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-200.png">
       <PackagePath>dotnet_bot.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-400.png">
-      <PackagePath>dotnet_bot.scale-400.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-150.png">
+      <PackagePath>dotnet_bot.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-125.png">
+      <PackagePath>dotnet_bot.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\dotnet_bot.scale-100.png">
+      <PackagePath>dotnet_bot.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-400.png">
+      <PackagePath>appiconLargeTile.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-200.png">
+      <PackagePath>appiconLargeTile.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-150.png">
+      <PackagePath>appiconLargeTile.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-125.png">
+      <PackagePath>appiconLargeTile.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLargeTile.scale-100.png">
+      <PackagePath>appiconLargeTile.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-400.png">
+      <PackagePath>appiconWideTile.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-200.png">
+      <PackagePath>appiconWideTile.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-150.png">
+      <PackagePath>appiconWideTile.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-125.png">
+      <PackagePath>appiconWideTile.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconWideTile.scale-100.png">
+      <PackagePath>appiconWideTile.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-400.png">
+      <PackagePath>appiconMediumTile.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-200.png">
+      <PackagePath>appiconMediumTile.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-150.png">
+      <PackagePath>appiconMediumTile.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-125.png">
+      <PackagePath>appiconMediumTile.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconMediumTile.scale-100.png">
+      <PackagePath>appiconMediumTile.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-400.png">
+      <PackagePath>appiconSmallTile.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-200.png">
+      <PackagePath>appiconSmallTile.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-150.png">
+      <PackagePath>appiconSmallTile.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-125.png">
+      <PackagePath>appiconSmallTile.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconSmallTile.scale-100.png">
+      <PackagePath>appiconSmallTile.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-400.png">
+      <PackagePath>appiconStoreLogo.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-200.png">
+      <PackagePath>appiconStoreLogo.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-150.png">
+      <PackagePath>appiconStoreLogo.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-125.png">
+      <PackagePath>appiconStoreLogo.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconStoreLogo.scale-100.png">
+      <PackagePath>appiconStoreLogo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-256.png">
+      <PackagePath>appiconLogo.altform-lightunplated_targetsize-256.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-48.png">
+      <PackagePath>appiconLogo.altform-lightunplated_targetsize-48.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-32.png">
+      <PackagePath>appiconLogo.altform-lightunplated_targetsize-32.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-24.png">
+      <PackagePath>appiconLogo.altform-lightunplated_targetsize-24.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-16.png">
+      <PackagePath>appiconLogo.altform-lightunplated_targetsize-16.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-256.png">
+      <PackagePath>appiconLogo.altform-unplated_targetsize-256.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-48.png">
+      <PackagePath>appiconLogo.altform-unplated_targetsize-48.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-32.png">
+      <PackagePath>appiconLogo.altform-unplated_targetsize-32.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-24.png">
+      <PackagePath>appiconLogo.altform-unplated_targetsize-24.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-16.png">
+      <PackagePath>appiconLogo.altform-unplated_targetsize-16.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-256.png">
+      <PackagePath>appiconLogo.targetsize-256.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-48.png">
+      <PackagePath>appiconLogo.targetsize-48.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-32.png">
+      <PackagePath>appiconLogo.targetsize-32.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-24.png">
+      <PackagePath>appiconLogo.targetsize-24.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.targetsize-16.png">
+      <PackagePath>appiconLogo.targetsize-16.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-400.png">
+      <PackagePath>appiconLogo.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-200.png">
+      <PackagePath>appiconLogo.scale-200.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-150.png">
+      <PackagePath>appiconLogo.scale-150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-125.png">
+      <PackagePath>appiconLogo.scale-125.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appiconLogo.scale-100.png">
+      <PackagePath>appiconLogo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\resizetizer\r\appicon.ico">
+      <PackagePath>appicon.ico</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.deps.json">
       <PackagePath>P2PFil.deps.json</PackagePath>
@@ -769,6 +769,12 @@
     <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.19041.57\lib\net8.0\WinRT.Runtime.dll">
       <PackagePath>WinRT.Runtime.dll</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\communitytoolkit.maui\9.1.1\lib\net8.0-windows10.0.19041\CommunityToolkit.Maui.dll">
+      <PackagePath>CommunityToolkit.Maui.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\communitytoolkit.maui.core\9.1.1\lib\net8.0-windows10.0.19041\CommunityToolkit.Maui.Core.dll">
+      <PackagePath>CommunityToolkit.Maui.Core.dll</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\microsoft.extensions.configuration\8.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll">
       <PackagePath>Microsoft.Extensions.Configuration.dll</PackagePath>
     </AppxPackagedFile>
@@ -867,6 +873,9 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\microsoft.windowsappsdk\1.5.240627000\lib\net6.0-windows10.0.18362.0\Microsoft.WindowsAppRuntime.Bootstrap.Net.dll">
       <PackagePath>Microsoft.WindowsAppRuntime.Bootstrap.Net.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\system.speech\8.0.0\runtimes\win\lib\net8.0\System.Speech.dll">
+      <PackagePath>System.Speech.dll</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alpw9\.nuget\packages\microsoft.maui.controls.core\8.0.82\lib\net8.0-windows10.0.19041\ar\Microsoft.Maui.Controls.resources.dll">
       <PackagePath>ar\Microsoft.Maui.Controls.resources.dll</PackagePath>

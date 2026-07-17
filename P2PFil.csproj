@@ -13,7 +13,7 @@
 		<!-- Uygulama Bilgileri -->
 		<ApplicationTitle>P2PFil</ApplicationTitle>
 		<ApplicationId>com.companyname.p2pfil</ApplicationId>
-		<ApplicationDisplayVersion>5.0</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>12.14.17</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<!-- Android Sürüm Ayarları -->
@@ -52,6 +52,7 @@
 
 	<ItemGroup>
 		<!-- Bağımlılıklar (Uyarıları engellemek için sabit sürümler) -->
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
@@ -59,10 +60,16 @@
 
 	<ItemGroup>
 		<MauiXaml Update="ChatModule\ChatPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
+		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 		</MauiXaml>
 		<MauiXaml Update="FilesPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
+		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		</MauiXaml>
+		<MauiXaml Update="MainPage.xaml">
+		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		</MauiXaml>
+		<MauiXaml Update="ProfilePage.xaml">
+		  <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
 		</MauiXaml>
 	</ItemGroup>
 

@@ -4,6 +4,13 @@ using System.Runtime.CompilerServices;
 
 namespace P2PFil.ChatModule
 {
+    public enum MessageStatus
+    {
+        Sending,
+        Sent,
+        Failed
+    }
+
     public class ChatMessage : INotifyPropertyChanged
     {
         private string _senderName = string.Empty; //[cite: 15]
@@ -80,6 +87,38 @@ namespace P2PFil.ChatModule
         public bool IsImage => MessageType == "Image"; //[cite: 15]
         public bool IsVideo => MessageType == "Video"; //[cite: 15]
         public bool IsText => MessageType == "Text"; //[cite: 15]
+
+        // YENİ: gönderim durumu (yalnızca IsMe == true olan mesajlarda anlamlı)
+        private MessageStatus _status = MessageStatus.Sent;
+        public MessageStatus Status
+        {
+            get => _status;
+            set { _status = value; OnPropertyChanged(); OnPropertyChanged(nameof(StatusIcon)); }
+        }
+
+        // YENİ: XAML'de saat yanında gösterilecek küçük durum ikonu
+        public string StatusIcon => Status switch
+        {
+            MessageStatus.Sending => "🕓",
+            MessageStatus.Sent => "✓",
+            MessageStatus.Failed => "⚠",
+            _ => string.Empty
+        };
+
+        // YENİ: bu mesajın üstünde gün ayırıcı gösterilsin mi
+        // (ChatPage.AppendWithDateSeparator tarafından, listeye eklenirken set edilir)
+        private bool _showDateSeparator;
+        public bool ShowDateSeparator
+        {
+            get => _showDateSeparator;
+            set { _showDateSeparator = value; OnPropertyChanged(); }
+        }
+
+        public string DateSeparatorText => Timestamp.Date == DateTime.Today
+            ? "Bugün"
+            : Timestamp.Date == DateTime.Today.AddDays(-1)
+                ? "Dün"
+                : Timestamp.ToString("dd MMMM yyyy");
 
         public event PropertyChangedEventHandler? PropertyChanged; //[cite: 15]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "") //[cite: 15]

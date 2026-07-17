@@ -6,6 +6,8 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.pdb
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\resources.pri
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\CommunityToolkit.Maui.dll
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\CommunityToolkit.Maui.Core.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.Configuration.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Extensions.DependencyInjection.dll
@@ -39,6 +41,7 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Windows.System.Projection.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.Windows.Widgets.Projection.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\Microsoft.WindowsAppRuntime.Bootstrap.Net.dll
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\System.Speech.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\ar\Microsoft.Maui.Controls.resources.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\ca\Microsoft.Maui.Controls.resources.dll
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win-x64\cs\Microsoft.Maui.Controls.resources.dll
@@ -336,6 +339,7 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.AssemblyInfoInputs.cache
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.AssemblyInfo.cs
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.csproj.CoreCompileInputs.cache
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.sourcelink.json
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\XamlC.stamp
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.csproj.Up2Date
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.dll
@@ -359,4 +363,3 @@ C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\qualifiers.txt.intermediate
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\MultipleQualifiersPerDimensionFound.txt
 C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\ProjectArchitectures.txt
-C:\Users\alpw9\source\repos\P2PFil\P2PFil\obj\Release\net8.0-windows10.0.19041.0\win-x64\P2PFil.sourcelink.json

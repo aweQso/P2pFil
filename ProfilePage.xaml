@@ -1,0 +1,198 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:P2PFil.Controls"
+             xmlns:helpers="clr-namespace:P2PFil.Helpers"
+             x:Class="P2PFil.ProfilePage"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <helpers:InvertedBoolConverter x:Key="InvertedBool" />
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#020617" Offset="0.0" />
+            <GradientStop Color="#090D16" Offset="0.6" />
+            <GradientStop Color="#020617" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
+        <ScrollView x:Name="AnimatedContent" Opacity="0" Padding="20,20,20,100">
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Profil Resmi Seçim Alanı -->
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="6" Margin="0,15,0,5">
+                    <Grid>
+                        <!-- Dış Halka Efekti -->
+                        <Border WidthRequest="110" HeightRequest="110" StrokeShape="RoundRectangle 55" Stroke="#10B981" StrokeThickness="2" Background="Transparent"/>
+
+                        <Border WidthRequest="98" HeightRequest="98" StrokeShape="RoundRectangle 49" Background="#0F172A" StrokeThickness="0" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnChangeProfileImageTapped" />
+                            </Border.GestureRecognizers>
+                            <Image Source="{Binding ProfileImagePath}" Aspect="AspectFill" />
+                        </Border>
+                    </Grid>
+                    <Label Text="Değiştirmek İçin Dokun" FontSize="11" TextColor="#64748B" HorizontalOptions="Center" FontAttributes="Bold" CharacterSpacing="0.3"/>
+                </VerticalStackLayout>
+
+                <!-- YENİ: Canlı İstatistik Kartları (3 Kolon) -->
+                <Grid ColumnDefinitions="*, *, *" ColumnSpacing="10">
+                    <!-- Paylaşılan Dosyalar -->
+                    <Border Grid.Column="0" Background="#090D16" Stroke="#1E293B" StrokeThickness="1" Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12"/>
+                        </Border.StrokeShape>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="Paylaşılan" FontSize="10" TextColor="#64748B" HorizontalOptions="Center"/>
+                            <Label Text="{Binding SharedFilesCount, StringFormat='{0} Adet'}" FontSize="13" FontAttributes="Bold" TextColor="#F8FAFC" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Performans Modu Statüsü -->
+                    <Border Grid.Column="1" Background="#090D16" Stroke="#1E293B" StrokeThickness="1" Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12"/>
+                        </Border.StrokeShape>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="Güvenli Mod" FontSize="10" TextColor="#64748B" HorizontalOptions="Center"/>
+                            <Label FontSize="13" FontAttributes="Bold" HorizontalOptions="Center">
+                                <Label.Triggers>
+                                    <!-- Converter kaldırıldı, DataTrigger ile kesin çözüm -->
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsPerformanceModeEnabled}" Value="True">
+                                        <Setter Property="Text" Value="Aktif" />
+                                        <Setter Property="TextColor" Value="#10B981" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsPerformanceModeEnabled}" Value="False">
+                                        <Setter Property="Text" Value="Standart" />
+                                        <Setter Property="TextColor" Value="#64748B" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Güvenlik ID Tipi -->
+                    <Border Grid.Column="2" Background="#090D16" Stroke="#1E293B" StrokeThickness="1" Padding="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12"/>
+                        </Border.StrokeShape>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                            <Label Text="Güvenlik" FontSize="10" TextColor="#64748B" HorizontalOptions="Center"/>
+                            <Label Text="TOFU (Aktif)" FontSize="12" FontAttributes="Bold" TextColor="#6366F1" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- Temel Ayarlar -->
+                <Border Background="#090D16" Stroke="#1E293B" StrokeThickness="1.5" Padding="20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="18">
+
+                        <!-- Kullanıcı Adı -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Kullanıcı Adı" FontSize="12" FontAttributes="Bold" TextColor="#94A3B8" CharacterSpacing="0.5"/>
+                            <Entry x:Name="UsernameEntry" Placeholder="Kullanıcı adınız..." TextColor="White" ClearButtonVisibility="WhileEditing" TextChanged="OnUsernameEntryTextChanged" />
+                        </VerticalStackLayout>
+
+                        <!-- İndirme Klasörü Seçimi -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="İndirme Klasörü" FontSize="12" FontAttributes="Bold" TextColor="#94A3B8" CharacterSpacing="0.5"/>
+                            <Border Background="#111827" Stroke="#1E293B" StrokeThickness="1" Padding="12">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnChangeFolderTapped" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <Label Grid.Column="0" Text="{Binding DownloadFolder}" FontSize="13" FontAttributes="Bold" TextColor="White" VerticalOptions="Center" LineBreakMode="MiddleTruncation" />
+                                    <Label Grid.Column="1" Text="Değiştir" FontSize="13" TextColor="#6366F1" FontAttributes="Bold" VerticalOptions="Center" Margin="10,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!-- Dinamik Depolama Durumu Göstergesi -->
+                        <VerticalStackLayout Spacing="6">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Grid.Column="0" Text="Depolama Alanı (Kullanılan)" FontSize="11" TextColor="#64748B" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding FreeSpaceText}" FontSize="11" TextColor="{Binding UsedSpaceColor}" FontAttributes="Bold" />
+                            </Grid>
+                            <!-- Dolu oranına göre renk değiştiren bar -->
+                            <ProgressBar Progress="{Binding UsedSpacePercent}" ProgressColor="{Binding UsedSpaceColor}" HeightRequest="5" BackgroundColor="#1E293B"/>
+                        </VerticalStackLayout>
+
+                        <!-- Performans Modu Anahtarı -->
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                <Label Text="Güvenli İndirme Modu" FontSize="13" FontAttributes="Bold" TextColor="White" />
+                                <Label Text="1 Dosyayı aynı anda en fazla Kapalı/3 Kişi   Açık/1 Kişi İndirebilir." FontSize="10" TextColor="#64748B" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" x:Name="PerformanceModeSwitch" OnColor="#10B981" ThumbColor="White"
+                                    Toggled="OnPerformanceModeToggled" VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- Mesaj Bildirimleri Anahtarı -->
+                        <Grid ColumnDefinitions="*, Auto">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                <Label Text="Mesaj Bildirimleri" FontSize="13" FontAttributes="Bold" TextColor="White" />
+                                <Label Text="Yeni mesaj geldiğinde ekranda bildirim penceresi göster" FontSize="10" TextColor="#64748B" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" x:Name="MessageNotificationsSwitch" OnColor="#10B981" ThumbColor="White"
+                                    Toggled="OnMessageNotificationsToggled" VerticalOptions="Center" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Aktif Transfer Durumu -->
+                <Border Background="#090D16" Stroke="#1E293B" StrokeThickness="1.5" Padding="20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Aktif Transfer Durumu" FontAttributes="Bold" TextColor="White" CharacterSpacing="0.5"/>
+
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Grid.Column="0" Text="Anlık İndirme Hızı" FontSize="14" TextColor="#64748B" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="{Binding CurrentDownloadSpeed}" FontSize="16" FontAttributes="Bold" TextColor="#10B981" VerticalOptions="Center"/>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Güvenlik Kartı (TOFU) -->
+                <Border Background="#090D16" Stroke="#1E293B" StrokeThickness="1.5" Padding="20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Cihaz Doğrulama Güvenliği" FontAttributes="Bold" TextColor="White"/>
+                        <Label Text="Bu cihazın P2P ağındaki benzersiz kimliğidir. Değiştirilemez." FontSize="11" TextColor="#64748B"/>
+                        <Border Background="#111827" Stroke="Transparent" Padding="12" Margin="0,5,0,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Label Text="{Binding DeviceId}" FontSize="11" FontFamily="OpenSansRegular" TextColor="#10B981" LineBreakMode="CharacterWrap" />
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Kaydet Butonu -->
+                <Button x:Name="SaveNameButton" Text="Ayarları Uygula" Clicked="OnSaveClicked" 
+                        BackgroundColor="#6366F1" TextColor="White" CornerRadius="12" HeightRequest="52" Margin="0,5,0,0" IsEnabled="False"/>
+
+                <Label x:Name="SavedConfirmationLabel" Text="✓ Ayarlar kaydedildi" TextColor="#10B981" FontSize="12" FontAttributes="Bold"
+                       HorizontalOptions="Center" IsVisible="False" Margin="0,4,0,0" />
+
+                <Label Text="P2PFil v12.14.17 • Pro-Grade LAN Engine" HorizontalOptions="Center" FontSize="11" TextColor="#475569" Margin="0,15,0,0" CharacterSpacing="1"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Custom Tab Bar -->
+        <controls:CustomTabBar x:Name="MyCustomTabBar" />
+    </Grid>
+</ContentPage>

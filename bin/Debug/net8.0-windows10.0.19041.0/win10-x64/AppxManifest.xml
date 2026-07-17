@@ -7,7 +7,7 @@
 
     Paket bildirim dosyaları hakkında daha fazla bilgi için bkz. http://go.microsoft.com/fwlink/?LinkID=241727
   -->
-  <Identity Name="com.companyname.p2pfil" Publisher="CN=alpw9" Version="11.12.13.0" ProcessorArchitecture="x64" />
+  <Identity Name="com.companyname.p2pfil" Publisher="CN=alpw9" Version="12.14.16.0" ProcessorArchitecture="x64" />
   <mp:PhoneIdentity PhoneProductId="B9AB03FB-197D-48D9-9813-2E70DAC8E68F" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>P2PFil</DisplayName>

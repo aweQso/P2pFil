@@ -1,1 +1,1 @@
-C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win10-x64\AppPackages\P2PFil_11.14.14.0_Test\P2PFil_11.14.14.0_x64.msix
+C:\Users\alpw9\source\repos\P2PFil\P2PFil\bin\Release\net8.0-windows10.0.19041.0\win10-x64\AppPackages\P2PFil_12.14.17.0_Test\P2PFil_12.14.17.0_x64.msix

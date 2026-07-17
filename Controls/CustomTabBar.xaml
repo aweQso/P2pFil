@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="P2PFil.Controls.CustomTabBar">
+
+    <Border VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,30" WidthRequest="300" HeightRequest="70" 
+            Background="#20FFFFFF" Stroke="#40FFFFFF" StrokeThickness="1" ZIndex="100">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="35" />
+        </Border.StrokeShape>
+
+        <Grid>
+            <!-- Hareketli Seçim Barı (Arka Planda) -->
+            <Border x:Name="SelectionIndicator" 
+                    WidthRequest="90" HeightRequest="50" 
+                    Background="#40FFFFFF" StrokeThickness="0"
+                    HorizontalOptions="Start" Margin="5,0,0,0" VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="25" />
+                </Border.StrokeShape>
+            </Border>
+
+            <!-- İkonlar (Ön Planda) -->
+            <Grid ColumnDefinitions="*, *, *" Padding="6">
+                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnGoToNetworkClicked" />
+                    </StackLayout.GestureRecognizers>
+                    <Path Data="M12,21L15.6,16.2C14.6,15.45 13.35,15 12,15C10.65,15 9.4,15.45 8.4,16.2L12,21M12,3C7.95,3 4.21,4.34 1.2,6.6L3,9C5.5,7.12 8.62,6 12,6C15.38,6 18.5,7.12 21,9L22.8,6.6C19.79,4.34 16.05,3 12,3M12,9C9.3,9 6.81,9.89 4.8,11.4L6.6,13.8C8.1,12.67 9.97,12 12,12C14.03,12 15.9,12.67 17.4,13.8L19.2,11.4C17.19,9.89 14.7,9 12,9Z"
+                          Fill="White" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnGoToFilesClicked" />
+                    </StackLayout.GestureRecognizers>
+                    <Path Data="M20 6H12L10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12Z"
+                          Fill="White" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="2" VerticalOptions="Center">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnGoToProfileClicked" />
+                    </StackLayout.GestureRecognizers>
+                    <Path Data="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                          Fill="White" HorizontalOptions="Center" HeightRequest="22" WidthRequest="22" />
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </Border>
+</ContentView>

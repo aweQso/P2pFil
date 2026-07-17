@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<Shell x:Class="P2PFil.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:P2PFil"
-       x:Class="P2PFil.AppShell">
+       xmlns:local="clr-namespace:P2PFil">
 
-    <!-- Uygulamanın ilk açılacağı sayfa MainPage olarak ayarlandı -->
-    <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+    <!-- TabBar'ı tamamen sildik, sadece sayfaları tanımlıyoruz -->
+    <ShellContent Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}" />
+    <ShellContent Route="FilesPage" ContentTemplate="{DataTemplate local:FilesPage}" />
+    <ShellContent Route="ProfilePage" ContentTemplate="{DataTemplate local:ProfilePage}" />
 
 </Shell>

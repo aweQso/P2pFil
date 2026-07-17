@@ -1,94 +1,258 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.IO;
 using P2PFil.ChatModule;
 using Microsoft.Maui.Controls;
+using P2PFil.Services;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
-namespace P2PFil;
-
-public partial class MainPage : ContentPage
+namespace P2PFil
 {
-    public ObservableCollection<string> Peers { get; } = new();
-
-    public MainPage()
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-        PeersList.ItemsSource = Peers;
+        // Ham (filtrelenmemiş) tüm peer'lar burada tutulur; ekrandaki liste bunun süzülmüş halidir.
+        private readonly List<Peer> _allPeers = new();
 
-        App.NetworkService.PeerFound += NetworkService_PeerFound;
-        App.NetworkService.PeerNameChanged += NetworkService_PeerNameChanged;
-    }
+        public ObservableCollection<Peer> Peers { get; } = new();
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
+        public ICommand OpenChatCommand { get; }
 
-        if (!string.IsNullOrWhiteSpace(App.CurrentUsername) && App.CurrentUsername.Length >= 3)
+        public MainPage()
         {
-            UsernameEntry.Text = App.CurrentUsername;
-            StartDiscoveryButton.IsEnabled = false;
-            StartDiscoveryButton.Text = "Ağ Dinleniyor...";
+            InitializeComponent();
+            BindingContext = this;
+            PeersList.ItemsSource = Peers;
+
+            OpenChatCommand = new Command<Peer>(async (peer) => await OpenChat(peer));
+
+            App.NetworkService.PeerFound += NetworkService_PeerFound;
+            App.NetworkService.PeerNameChanged += NetworkService_PeerNameChanged;
+
+            // YENİ: Constructor'da (sayfa yaşam döngüsünden bağımsız) abone
+            // oluyoruz, böylece MainPage arka planda olsa bile bir peer'ın
+            // profil resmi güncellendiğinde anında yakalanır -- eskiden bu
+            // sadece OnAppearing/OnDisappearing arasında dinleniyordu.
+            ProfileMessenger.PeerProfileChanged += OnPeerProfileImageUpdated;
+
+            UpdatePeerCount();
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            MyProfileImageMain.Source = SettingsService.ProfileImagePath;
+            // NOT: OnPeerProfileImageUpdated artık constructor'da ProfileMessenger'a
+            // abone (bkz. yukarısı); burada tekrar App.NetworkService.ProfileImageUpdated'a
+            // abone olmuyoruz ki bildirim iki kez işlenmesin.
+            SettingsService.ProfileImageChanged += UpdateProfileImage;
+
+            int targetIndex = 0;
+            double direction = (targetIndex > App.CurrentTabIndex) ? 1 : -1;
+
+            AnimatedContent.TranslationX = direction * this.Width;
+            AnimatedContent.Opacity = 0;
+
+            await Task.Delay(50);
+
+            _ = AnimatedContent.FadeTo(1, 750, Easing.CubicOut);
+            await AnimatedContent.TranslateTo(0, 0, 750, Easing.CubicOut);
+
+            MyCustomTabBar?.SetActiveIndex(targetIndex);
+            App.CurrentTabIndex = targetIndex;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            SettingsService.ProfileImageChanged -= UpdateProfileImage;
+        }
+
+        private void UpdateProfileImage()
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                MyProfileImageMain.Source = null; // Önce temizle
+                MyProfileImageMain.Source = SettingsService.ProfileImagePath;
+            });
+        }
+
+        private void OnPeerProfileImageUpdated(string deviceId)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                var peer = _allPeers.FirstOrDefault(p => p.DeviceId == deviceId);
+                if (peer != null)
+                {
+                    string imagePath = Path.Combine(FileSystem.CacheDirectory, $"{deviceId}_profile.png");
+                    if (File.Exists(imagePath))
+                    {
+                        // MAUI Cache'ini tetiklemek için önce adresi sıfırlıyoruz, sonra yeni resmi basıyoruz
+                        peer.ProfileImagePath = string.Empty;
+                        peer.ProfileImagePath = imagePath;
+                    }
+                }
+            });
+        }
+
+        private void NetworkService_PeerFound(string name)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (name == SettingsService.Username) return;
+
+                // Önce DeviceId'yi alıyoruz ki kontrolü bu eşsiz ID üzerinden yapabilelim
+                string deviceId = App.NetworkService.GetDeviceIdByName(name);
+
+                // İsim yerine DeviceId ile benzersizlik kontrolü yapıyoruz
+                if (!_allPeers.Any(p => p.DeviceId == deviceId))
+                {
+                    string imagePath = Path.Combine(FileSystem.CacheDirectory, $"{deviceId}_profile.png");
+                    string initialImagePath = File.Exists(imagePath) ? imagePath : "dotnet_bot.png";
+
+                    var peer = new Peer
+                    {
+                        Name = name,
+                        DeviceId = deviceId,
+                        ProfileImagePath = initialImagePath
+                    };
+
+                    _allPeers.Add(peer);
+                    ApplyFilter();
+                }
+            });
+        }
+
+        private void NetworkService_PeerNameChanged(string ip, string oldName, string newName)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                var peer = _allPeers.FirstOrDefault(p => p.Name == oldName);
+
+                if (newName == SettingsService.Username)
+                {
+                    if (peer != null) _allPeers.Remove(peer);
+                    ApplyFilter();
+                    return;
+                }
+
+                if (peer != null)
+                {
+                    peer.Name = newName;
+                    ApplyFilter();
+                }
+            });
+        }
+
+        private async void OnPeerSelected(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPeer = e.CurrentSelection.FirstOrDefault() as Peer;
+            if (selectedPeer == null) return;
+
+            // Önce sohbete git ve kullanıcının sohbetten geri dönmesini bekle (Await)
+            await OpenChat(selectedPeer);
+
+            // Kullanıcı sohbetten geri çıktığı an, listenin seçimini MainThread üzerinde güvenle sıfırla
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                if (PeersList != null)
+                {
+                    PeersList.SelectedItem = null;
+                }
+            });
+        }
+
+        private async Task OpenChat(Peer? peer)
+        {
+            if (peer == null) return;
+            await Navigation.PushAsync(new ChatPage(peer.DeviceId, peer.Name, peer.ProfileImagePath));
+        }
+
+        private async void OnProfileAvatarTapped(object sender, TappedEventArgs e)
+        {
+            await Navigation.PushAsync(new ProfilePage());
+        }
+
+        // ARAMA / FİLTRELEME
+
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            ClearSearchButton.IsVisible = !string.IsNullOrEmpty(e.NewTextValue);
+            ApplyFilter();
+        }
+
+        private void OnClearSearchClicked(object sender, EventArgs e)
+        {
+            SearchEntry.Text = string.Empty;
+            ClearSearchButton.IsVisible = false;
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            string query = SearchEntry?.Text?.Trim() ?? string.Empty;
+
+            var filtered = string.IsNullOrEmpty(query)
+                ? _allPeers
+                : _allPeers.Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            Peers.Clear();
+            foreach (var p in filtered)
+            {
+                Peers.Add(p);
+            }
+
+            UpdatePeerCount();
+        }
+
+        private void UpdatePeerCount()
+        {
+            if (PeerCountLabel != null)
+            {
+                PeerCountLabel.Text = _allPeers.Count.ToString();
+            }
+        }
+
+        // AŞAĞI ÇEKİP YENİLEME: mevcut ağ taramasını tetikler, listeyi sıfırlamaz (peer'lar kalıcı kalsın)
+        private async void OnPeersRefreshing(object sender, EventArgs e)
+        {
             App.NetworkService.StartDiscovery();
+            await Task.Delay(1200);
+            PeersRefreshView.IsRefreshing = false;
         }
     }
 
-    protected override void OnDisappearing()
+    public class Peer : INotifyPropertyChanged
     {
-        base.OnDisappearing();
-    }
+        private string _name = string.Empty;
+        private string _deviceId = string.Empty;
+        private string _profileImagePath = string.Empty;
 
-    private void NetworkService_PeerFound(string name)
-    {
-        MainThread.BeginInvokeOnMainThread(() =>
+        public string Name
         {
-            if (!Peers.Contains(name))
-                Peers.Add(name);
-        });
-    }
+            get => _name;
+            set { _name = value; OnPropertyChanged(); }
+        }
 
-    private void NetworkService_PeerNameChanged(string ip, string oldName, string newName)
-    {
-        MainThread.BeginInvokeOnMainThread(() =>
+        public string DeviceId
         {
-            int index = Peers.IndexOf(oldName);
-            if (index != -1)
-            {
-                Peers.RemoveAt(index);
-                Peers.Insert(index, newName);
-            }
-        });
-    }
+            get => _deviceId;
+            set { _deviceId = value; OnPropertyChanged(); }
+        }
 
-    private async void OnPeerSelected(object sender, SelectionChangedEventArgs e)
-    {
-        var selectedName = e.CurrentSelection.FirstOrDefault() as string;
-        if (selectedName == null) return;
+        public string ProfileImagePath
+        {
+            get => _profileImagePath;
+            set { _profileImagePath = value; OnPropertyChanged(); }
+        }
 
-        string deviceId = App.NetworkService.GetDeviceIdByName(selectedName);
-        await Navigation.PushAsync(new ChatPage(deviceId, selectedName));
-
-        PeersList.SelectedItem = null;
-    }
-
-    private void OnUsernameChanged(object sender, TextChangedEventArgs e)
-    {
-        string newText = e.NewTextValue ?? "";
-        StartDiscoveryButton.IsEnabled = (newText.Length >= 3 && newText.Length <= 32);
-    }
-
-    private void OnStartDiscoveryClicked(object sender, EventArgs e)
-    {
-        string username = UsernameEntry.Text ?? "";
-        if (username.Length < 3 || username.Length > 32) return;
-
-        App.CurrentUsername = username;
-        App.NetworkService.StartDiscovery();
-
-        StartDiscoveryButton.IsEnabled = false;
-        StartDiscoveryButton.Text = "Ağ Dinleniyor...";
-    }
-
-    private async void OnGoToFilesClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("FilesPage", animate: true);
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

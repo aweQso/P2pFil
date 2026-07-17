@@ -1,5 +1,7 @@
 obj\Release\net8.0-android\android-arm\aot\_Microsoft.Android.Resource.Designer.dll.so
 obj\Release\net8.0-android\android-arm\aot\P2PFil.dll.so
+obj\Release\net8.0-android\android-arm\aot\CommunityToolkit.Maui.dll.so
+obj\Release\net8.0-android\android-arm\aot\CommunityToolkit.Maui.Core.dll.so
 obj\Release\net8.0-android\android-arm\aot\Microsoft.Extensions.Configuration.dll.so
 obj\Release\net8.0-android\android-arm\aot\Microsoft.Extensions.Configuration.Abstractions.dll.so
 obj\Release\net8.0-android\android-arm\aot\Microsoft.Extensions.DependencyInjection.dll.so
@@ -35,13 +37,16 @@ obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.Navigation.Runtime.d
 obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.Navigation.UI.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.RecyclerView.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.SavedState.dll.so
+obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.Security.SecurityCrypto.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.SwipeRefreshLayout.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.ViewPager.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.AndroidX.ViewPager2.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.Google.Android.Material.dll.so
+obj\Release\net8.0-android\android-arm\aot\Xamarin.Google.Crypto.Tink.Android.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.Kotlin.StdLib.dll.so
 obj\Release\net8.0-android\android-arm\aot\Xamarin.KotlinX.Coroutines.Core.Jvm.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Collections.Concurrent.dll.so
+obj\Release\net8.0-android\android-arm\aot\System.Collections.Immutable.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Collections.NonGeneric.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Collections.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.ComponentModel.Primitives.dll.so
@@ -49,6 +54,7 @@ obj\Release\net8.0-android\android-arm\aot\System.ComponentModel.TypeConverter.d
 obj\Release\net8.0-android\android-arm\aot\System.ComponentModel.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Console.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Diagnostics.DiagnosticSource.dll.so
+obj\Release\net8.0-android\android-arm\aot\System.Diagnostics.TraceSource.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Formats.Asn1.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.IO.Compression.Brotli.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.IO.Compression.dll.so
@@ -74,6 +80,7 @@ obj\Release\net8.0-android\android-arm\aot\System.Text.Json.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Text.RegularExpressions.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Threading.Thread.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Threading.dll.so
+obj\Release\net8.0-android\android-arm\aot\System.Web.HttpUtility.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.Xml.ReaderWriter.dll.so
 obj\Release\net8.0-android\android-arm\aot\System.dll.so
 obj\Release\net8.0-android\android-arm\aot\Java.Interop.dll.so
