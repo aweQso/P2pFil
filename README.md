@@ -16,7 +16,7 @@ V12.14.17
 
 - **UI improvements**
   - Refreshed Files page layout and styling
-  - Profil page add and profile picture feature and saveable name
+  - Profile tab added; profile photo feature and saveable name added.
   - Progress panel now stays visible during auto-reconnect attempts
 
 - **Reliability fixes**
