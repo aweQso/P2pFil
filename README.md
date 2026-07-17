@@ -35,3 +35,34 @@ V12.14.17
 - TCP/UDP sockets
 - AES encryption for file transfers
 - JSON-based local persistence (no external DB)
+
+Don't forget to install the certificate before installing on Windows!!
+
+Installation steps:
+-Double-click the "P2PFil.cer" file.
+
+-Click the
+"Install Certificate..."
+button.
+
+-Ensure "Current User" is selected.
+Click the "Next" button.
+
+-Select the option
+"Place all certificates in the following store".
+Then press the
+"Browse..."
+button.
+
+-Select
+"Trusted Root Certification Authorities".
+Click the "OK" → "Next" → "Finish"
+buttons.
+
+Windows may display a warning.
+Click "Yes"
+to proceed.
+
+Installation complete.
+
+You can now open and install the "P2PFil.msix" file.
