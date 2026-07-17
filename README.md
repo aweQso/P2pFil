@@ -16,7 +16,7 @@ V12.14.17
 
 - **UI improvements**
   - Refreshed Files page layout and styling
-  - Clearer download states (Waiting, Downloading, Paused, Reconnecting, Failed)
+  - Profil page add and profile picture feature and saveable name
   - Progress panel now stays visible during auto-reconnect attempts
 
 - **Reliability fixes**
@@ -27,7 +27,7 @@ V12.14.17
 
 - **Performance optimizations**
   - Removed redundant re-hashing of already-downloaded bytes on every resume/retry — full file integrity check now runs only once, when the download actually completes
-  - Increased transfer buffer size (64KB → 128KB) to reduce per-chunk overhead on fast connections, balanced against mobile memory constraints
+  - Increased transfer buffer size (128KB) to reduce per-chunk overhead on fast connections, balanced against mobile memory constraints
 
 ## Tech Stack
 
